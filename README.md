@@ -13,6 +13,8 @@ An end-to-end market analytics project on real Indian market data: **51 NIFTY 50
 | 📈 | **Tableau workbook** (`tableau/BullScope.twb`): 47,777-row daily dataset, 11 calculated fields (LOD + table calcs), 3 parameters | [`tableau/`](tableau/) |
 | 🐍 | **Python pipeline**: data download, analytics, ML, Monte Carlo, news collector, 12 tests, scheduled GitHub Actions refresh | `scripts/`, `tests/` |
 
+**▶ [Watch the 80-second demo video](reports/video/bullscope_demo.mp4)** (1080p, captions, no sound needed)
+
 ![Market overview](reports/figures/web_overview.png)
 
 | Market news: top stories, videos, "for you" | Crypto & Bitcoin: live prices, Fear & Greed |

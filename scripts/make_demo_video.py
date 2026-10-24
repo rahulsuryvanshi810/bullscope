@@ -212,7 +212,7 @@ class Director:
         for k in range(1, n + 1):
             e = 0.5 - 0.5 * np.cos(np.pi * k / n)
             self.d.execute_script(f"window.scrollTo(0,{int(y0 + (target - y0) * e)})")
-            self.frame(self.shot(), 2, wheel=True)
+            self.frame(self.shot(), 2)
         self.frame(self.shot(), 2)
 
     def scroll_to(self, sel, top=0.16, seconds=1.3):

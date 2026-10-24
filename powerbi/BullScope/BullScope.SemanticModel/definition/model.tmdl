@@ -1,0 +1,22 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+ref table '_Measures'
+ref table 'Stock Prices'
+ref table 'Stocks'
+ref table 'Index Prices'
+ref table 'Funds'
+ref table 'Fund NAV'
+ref table 'Fund Holdings'
+ref table 'Option Chain'
+ref table 'FII DII'
+ref table 'Date'
+ref table 'Top N'
+
+ref expression DataFolder
+

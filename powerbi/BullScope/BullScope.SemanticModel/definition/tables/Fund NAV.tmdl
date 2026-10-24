@@ -1,0 +1,43 @@
+table 'Fund NAV'
+	lineageTag: 5f987c71-a65e-488e-abf3-ad39fec21bbe
+
+	column 'date'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: 7394988f-847f-49b4-a64d-1bcb702753a1
+		summarizeBy: none
+		sourceColumn: date
+
+	column 'nav'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 1064005c-3985-43cf-bf76-be1d1efa2197
+		summarizeBy: none
+		sourceColumn: nav
+
+	column 'scheme_code'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 8dcdcd03-969b-4662-8562-8059568cc69b
+		summarizeBy: none
+		sourceColumn: scheme_code
+
+	partition 'Fund NAV' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_fund_nav.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"date", "nav", "scheme_code"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"date", "nav", "scheme_code"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"date", type date},
+				        {"nav", type number},
+				        {"scheme_code", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,205 @@
+table 'Funds'
+	lineageTag: 1d53434b-b881-49b9-ae27-0da702f06b90
+
+	column 'scheme_code'
+		dataType: int64
+		formatString: 0
+		isKey
+		lineageTag: c0398710-8976-4334-a281-7efdae849217
+		summarizeBy: none
+		sourceColumn: scheme_code
+
+	column 'fund'
+		dataType: string
+		lineageTag: 5715bd6f-a416-4293-84c2-e2e3444ea7c8
+		summarizeBy: none
+		sourceColumn: fund
+
+	column 'fund_house'
+		dataType: string
+		lineageTag: 287d06ca-6f4c-469a-8b22-d3081c8eaee9
+		summarizeBy: none
+		sourceColumn: fund_house
+
+	column 'category'
+		dataType: string
+		lineageTag: b8db0672-f42d-47cc-80d4-af5974273ca3
+		summarizeBy: none
+		sourceColumn: category
+
+	column 'asset_class'
+		dataType: string
+		lineageTag: f8cda88b-436d-46e2-b83c-fe0be037e5ed
+		summarizeBy: none
+		sourceColumn: asset_class
+
+	column 'aum_cr_approx'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 81f76d1c-2dbc-4134-830f-f46e8026695f
+		summarizeBy: sum
+		sourceColumn: aum_cr_approx
+
+	column 'nav'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a013ac6e-deda-4e16-9b3d-bd5ce9a1fa6f
+		summarizeBy: none
+		sourceColumn: nav
+
+	column 'r1m'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 81f631d4-a392-41a7-9777-a4774c66e0a8
+		summarizeBy: none
+		sourceColumn: r1m
+
+	column 'r3m'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 5fb8d16c-2720-497d-b2eb-d6899be578c7
+		summarizeBy: none
+		sourceColumn: r3m
+
+	column 'r6m'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: f4188f3f-8a14-4e62-a95b-4715c333e861
+		summarizeBy: none
+		sourceColumn: r6m
+
+	column 'r1y'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: eb2263dd-87c5-421e-ac24-a3c5c754108f
+		summarizeBy: none
+		sourceColumn: r1y
+
+	column 'cagr3y'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 7d154385-52fb-443b-9954-6eb400257ad1
+		summarizeBy: none
+		sourceColumn: cagr3y
+
+	column 'cagr5y'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 5cec4eb5-edd9-4831-9ca3-5cfb04fc6d82
+		summarizeBy: none
+		sourceColumn: cagr5y
+
+	column 'volatility'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: ce88cb2d-d4e8-4839-bc3e-058be0f3eab0
+		summarizeBy: none
+		sourceColumn: volatility
+
+	column 'sharpe'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3da9c2a9-0ed4-4f1a-bd4c-bf374eb93eff
+		summarizeBy: none
+		sourceColumn: sharpe
+
+	column 'sortino'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 14296c07-f26b-4776-913e-4de2e0c53cb8
+		summarizeBy: none
+		sourceColumn: sortino
+
+	column 'max_drawdown'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: d0e6e660-7c69-4ee1-bb5e-4bcf15ed6269
+		summarizeBy: none
+		sourceColumn: max_drawdown
+
+	column 'beta'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 885f6e66-c2b6-42c5-ba5d-310011b7e948
+		summarizeBy: none
+		sourceColumn: beta
+
+	column 'roll1y_pct_positive'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: a8e56e0c-20de-435d-a031-d750c40db9b4
+		summarizeBy: none
+		sourceColumn: roll1y_pct_positive
+
+	column 'sip_xirr'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 2a45c2ab-8cbf-4db0-b264-accc79ac1b1e
+		summarizeBy: none
+		sourceColumn: sip_xirr
+
+	column 'score'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 9b49bd26-df57-459a-8715-a10343dac043
+		summarizeBy: none
+		sourceColumn: score
+
+	column 'stars'
+		dataType: int64
+		formatString: 0
+		lineageTag: edcd465e-3638-4821-b6e0-7cc06c52c49f
+		summarizeBy: none
+		sourceColumn: stars
+
+	column 'recommendation'
+		dataType: string
+		lineageTag: b09b2a5c-badc-432a-8159-0f538a0f4efb
+		summarizeBy: none
+		sourceColumn: recommendation
+
+	column 'risk'
+		dataType: string
+		lineageTag: 66245bfa-4fcc-439a-b683-d2e6337ea2df
+		summarizeBy: none
+		sourceColumn: risk
+
+	partition 'Funds' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "dim_fund.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"scheme_code", "fund", "fund_house", "category", "asset_class", "aum_cr_approx", "nav", "r1m", "r3m", "r6m", "r1y", "cagr3y", "cagr5y", "volatility", "sharpe", "sortino", "max_drawdown", "beta", "roll1y_pct_positive", "sip_xirr", "score", "stars", "recommendation", "risk"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"scheme_code", "aum_cr_approx", "nav", "r1m", "r3m", "r6m", "r1y", "cagr3y", "cagr5y", "volatility", "sharpe", "sortino", "max_drawdown", "beta", "roll1y_pct_positive", "sip_xirr", "score", "stars"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"scheme_code", Int64.Type},
+				        {"fund", type text},
+				        {"fund_house", type text},
+				        {"category", type text},
+				        {"asset_class", type text},
+				        {"aum_cr_approx", type number},
+				        {"nav", type number},
+				        {"r1m", type number},
+				        {"r3m", type number},
+				        {"r6m", type number},
+				        {"r1y", type number},
+				        {"cagr3y", type number},
+				        {"cagr5y", type number},
+				        {"volatility", type number},
+				        {"sharpe", type number},
+				        {"sortino", type number},
+				        {"max_drawdown", type number},
+				        {"beta", type number},
+				        {"roll1y_pct_positive", type number},
+				        {"sip_xirr", type number},
+				        {"score", type number},
+				        {"stars", Int64.Type},
+				        {"recommendation", type text},
+				        {"risk", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

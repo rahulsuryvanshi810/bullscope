@@ -1,0 +1,82 @@
+table 'FII DII'
+	lineageTag: c88a618e-fed4-457d-bb02-6576f512c4c3
+
+	column 'date'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: 7c967f79-b7e9-4aca-a970-65e18e46d534
+		summarizeBy: none
+		sourceColumn: date
+
+	column 'fii_buy'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 37bb3eec-4bf5-4b52-b09d-258c27a0c3d7
+		summarizeBy: sum
+		sourceColumn: fii_buy
+
+	column 'fii_sell'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: bc594585-9445-48c0-8ef8-c2d6f7fd5646
+		summarizeBy: sum
+		sourceColumn: fii_sell
+
+	column 'fii_net'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 504867ba-bf7b-439b-8f9a-ea4b8acd4e10
+		summarizeBy: sum
+		sourceColumn: fii_net
+
+	column 'dii_buy'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 7a0ecfea-958c-49ba-8cd6-20c20ea2622b
+		summarizeBy: sum
+		sourceColumn: dii_buy
+
+	column 'dii_sell'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 87f7e1fb-da4b-49ca-ab5c-f46780bacd64
+		summarizeBy: sum
+		sourceColumn: dii_sell
+
+	column 'dii_net'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 82010c62-f5f5-4b22-8e8f-a8e0284d82e5
+		summarizeBy: sum
+		sourceColumn: dii_net
+
+	column 'nifty_close'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 118a9d29-2f92-4996-99f1-95d014822f53
+		summarizeBy: none
+		sourceColumn: nifty_close
+
+	partition 'FII DII' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_fii_dii.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"date", "fii_buy", "fii_sell", "fii_net", "dii_buy", "dii_sell", "dii_net", "nifty_close"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"date", "fii_buy", "fii_sell", "fii_net", "dii_buy", "dii_sell", "dii_net", "nifty_close"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"date", type date},
+				        {"fii_buy", type number},
+				        {"fii_sell", type number},
+				        {"fii_net", type number},
+				        {"dii_buy", type number},
+				        {"dii_sell", type number},
+				        {"dii_net", type number},
+				        {"nifty_close", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

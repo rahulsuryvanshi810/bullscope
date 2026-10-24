@@ -1,0 +1,43 @@
+name: Refresh market data
+
+on:
+  schedule:
+    - cron: "0 13 * * 1-5"   # 18:30 IST, after NSE close, Monday to Friday: full refresh
+    - cron: "*/30 * * * *"   # every 30 minutes: news only
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Latest news
+        working-directory: scripts
+        run: python fetch_news.py
+      - name: Download prices, indices and fund NAVs
+        if: github.event.schedule != '*/30 * * * *'
+        working-directory: scripts
+        run: python fetch_data.py
+      - name: Build analysis tables, dashboard data and BI files
+        if: github.event.schedule != '*/30 * * * *'
+        working-directory: scripts
+        run: |
+          python build_dataset.py
+          python build_bi_files.py --data-only
+      - run: python -m pytest -q
+        if: github.event.schedule != '*/30 * * * *'
+      - name: Commit if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data docs/data.js docs/news.json tableau/stocks_flat.csv
+          git diff --cached --quiet || git commit -m "Refresh market data $(date -u +%FT%H:%MZ)"
+          git push

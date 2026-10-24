@@ -1,0 +1,183 @@
+table 'Stocks'
+	lineageTag: fc377a4c-4a15-444d-85e7-ce8a3a578a8e
+
+	column 'sym'
+		dataType: string
+		isKey
+		lineageTag: ddd1dfb2-3b98-4ef8-9af6-1a26146d3f31
+		summarizeBy: none
+		sourceColumn: sym
+
+	column 'name'
+		dataType: string
+		lineageTag: 7412b293-4729-4739-a14f-f3d719db3ad0
+		summarizeBy: none
+		sourceColumn: name
+
+	column 'sector'
+		dataType: string
+		lineageTag: 29a3b2e9-5d65-4441-9588-42dea2bc372f
+		summarizeBy: none
+		sourceColumn: sector
+
+	column 'mcap_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: ab9099a4-35a2-40ae-9af3-05535ec42e08
+		summarizeBy: sum
+		sourceColumn: mcap_cr
+
+	column 'pe'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: aefcfad8-efc8-4849-b3aa-7efe4458a885
+		summarizeBy: none
+		sourceColumn: pe
+
+	column 'pb'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a28defe3-9bf0-4273-9247-6f57a5e5a5ab
+		summarizeBy: none
+		sourceColumn: pb
+
+	column 'eps'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3eabedcb-baa8-4dd4-88bd-64072bcfbe01
+		summarizeBy: none
+		sourceColumn: eps
+
+	column 'div_yield'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 451b4cf3-6123-4df7-b656-af7229d4beef
+		summarizeBy: none
+		sourceColumn: div_yield
+
+	column 'beta'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: b02b61c4-a3d7-4628-ace6-6fa2fd5166e6
+		summarizeBy: none
+		sourceColumn: beta
+
+	column 'high_52w'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5304317f-af42-412f-b838-b3268e944239
+		summarizeBy: none
+		sourceColumn: high_52w
+
+	column 'low_52w'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0e51f30d-c6a7-4e39-84b0-32ccd7c524a5
+		summarizeBy: none
+		sourceColumn: low_52w
+
+	column 'promoter_pct'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: ce177b4e-0837-48a3-9261-a7ab3aa2e4f9
+		summarizeBy: none
+		sourceColumn: promoter_pct
+
+	column 'institutions_pct'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 10f1bc81-448a-4a9e-a6b2-bc5b50c187fc
+		summarizeBy: none
+		sourceColumn: institutions_pct
+
+	column 'public_pct'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 9132b63e-f162-47e4-a9c3-49e03602f8ac
+		summarizeBy: none
+		sourceColumn: public_pct
+
+	column 'bse_close'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 366eb16f-508e-4ad7-b7c9-3acfe059a0ee
+		summarizeBy: none
+		sourceColumn: bse_close
+
+	column 'rsi'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: e27a984d-6548-41d0-bfcd-9eb1a7cad415
+		summarizeBy: none
+		sourceColumn: rsi
+
+	column 'score'
+		dataType: int64
+		formatString: 0
+		lineageTag: 24933b83-7577-40a9-a491-f0b2ea1fca65
+		summarizeBy: none
+		sourceColumn: score
+
+	column 'signal'
+		dataType: string
+		lineageTag: beb79919-3f22-4af8-a3be-d01d43cf2fde
+		summarizeBy: none
+		sourceColumn: signal
+
+	column 'p_up_20d'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: bf3c4c06-4343-48bc-89fa-6a688fb5d27b
+		summarizeBy: none
+		sourceColumn: p_up_20d
+
+	column 'mc_exp_return_60d'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 956269f0-e5d7-4875-adad-d6c795a76d79
+		summarizeBy: none
+		sourceColumn: mc_exp_return_60d
+
+	column 'mc_prob_up_60d'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: ff50bde4-3825-47b8-9cab-cc97663f1c97
+		summarizeBy: none
+		sourceColumn: mc_prob_up_60d
+
+	partition 'Stocks' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "dim_stock.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"sym", "name", "sector", "mcap_cr", "pe", "pb", "eps", "div_yield", "beta", "high_52w", "low_52w", "promoter_pct", "institutions_pct", "public_pct", "bse_close", "rsi", "score", "signal", "p_up_20d", "mc_exp_return_60d", "mc_prob_up_60d"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"mcap_cr", "pe", "pb", "eps", "div_yield", "beta", "high_52w", "low_52w", "promoter_pct", "institutions_pct", "public_pct", "bse_close", "rsi", "score", "p_up_20d", "mc_exp_return_60d", "mc_prob_up_60d"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"sym", type text},
+				        {"name", type text},
+				        {"sector", type text},
+				        {"mcap_cr", type number},
+				        {"pe", type number},
+				        {"pb", type number},
+				        {"eps", type number},
+				        {"div_yield", type number},
+				        {"beta", type number},
+				        {"high_52w", type number},
+				        {"low_52w", type number},
+				        {"promoter_pct", type number},
+				        {"institutions_pct", type number},
+				        {"public_pct", type number},
+				        {"bse_close", type number},
+				        {"rsi", type number},
+				        {"score", Int64.Type},
+				        {"signal", type text},
+				        {"p_up_20d", type number},
+				        {"mc_exp_return_60d", type number},
+				        {"mc_prob_up_60d", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

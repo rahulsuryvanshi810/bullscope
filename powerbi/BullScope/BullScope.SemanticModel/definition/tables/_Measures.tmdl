@@ -1,0 +1,448 @@
+table _Measures
+	lineageTag: 5958a499-eeea-463e-a1e8-ac6843e42caf
+
+	measure 'Last Close' = 
+			CALCULATE (
+			    SUM ( 'Stock Prices'[close] ),
+			    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Stock Prices' ) ) )
+			)
+		lineageTag: 3e896c64-e117-4ac3-919c-4ea3e1805081
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'First Close' = 
+			CALCULATE (
+			    SUM ( 'Stock Prices'[close] ),
+			    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Stock Prices' ) ) )
+			)
+		lineageTag: 702cdd20-2862-48b8-88f4-ef125e9953d2
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'Period Return %' = DIVIDE ( [Last Close], [First Close] ) - 1
+		lineageTag: 4d71c366-b41b-4143-8b10-550cd5704f32
+		formatString: 0.0%
+		displayFolder: 1 Stocks
+
+	measure 'Avg Stock Return %' = AVERAGEX ( VALUES ( Stocks[sym] ), [Period Return %] )
+		lineageTag: ce9e1a11-fcbb-4e59-bbdd-cf7c9c96e9ec
+		formatString: 0.0%
+		displayFolder: 1 Stocks
+
+	measure 'Period High' = MAX ( 'Stock Prices'[high] )
+		lineageTag: aaf91531-0200-41f0-8768-a84fa76afde6
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'Period Low' = MIN ( 'Stock Prices'[low] )
+		lineageTag: ee87905e-4ca4-45ea-8dfa-6a56d12dbc9a
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'Volatility %' = STDEV.S ( 'Stock Prices'[daily_return] ) * SQRT ( 252 )
+		lineageTag: e0ccedc5-f05d-476e-9a84-a51aa9d3d7c7
+		formatString: 0.0%
+		displayFolder: 1 Stocks
+
+	measure 'Total Volume' = SUM ( 'Stock Prices'[volume] )
+		lineageTag: e3c43657-1d8c-4bac-83b4-09ef2260e70f
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Sessions' = DISTINCTCOUNT ( 'Stock Prices'[date] )
+		lineageTag: 27cb6f2a-8da0-4097-be0f-051b1b66b5a9
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Advancers' = COUNTROWS ( FILTER ( VALUES ( Stocks[sym] ), [Period Return %] > 0 ) )
+		lineageTag: 35ebd32d-9ad6-40ab-8821-2ddb45b89cd9
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Decliners' = COUNTROWS ( FILTER ( VALUES ( Stocks[sym] ), [Period Return %] < 0 ) )
+		lineageTag: afffcfd2-341e-440b-97c7-00aab7b56ea7
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Market Cap (Cr)' = SUM ( Stocks[mcap_cr] )
+		lineageTag: 81627cf1-4394-42e6-9a58-7e8aa25d6b29
+		formatString: ₹#,0
+		displayFolder: 1 Stocks
+
+	measure 'BSE Close' = SELECTEDVALUE ( Stocks[bse_close] )
+		lineageTag: e87d1c78-e7c4-41c7-8049-7b717d106c60
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'NSE BSE Spread' = IF ( HASONEVALUE ( Stocks[sym] ), CALCULATE ( [Last Close], ALL ( 'Date' ) ) - [BSE Close] )
+		lineageTag: a2607723-17a0-4f49-8d01-280fd89a40c0
+		formatString: #,0.00
+		displayFolder: 1 Stocks
+
+	measure 'Signal Score' = SELECTEDVALUE ( Stocks[score] )
+		lineageTag: 0b49452d-46d4-43f3-9450-281c6c6f7633
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'ML Chance Up 20d %' = AVERAGE ( Stocks[p_up_20d] )
+		lineageTag: 217d65a0-c568-41cd-9563-f61600e85ece
+		formatString: 0.0%
+		displayFolder: 1 Stocks
+
+	measure 'Buy Signals' = CALCULATE ( COUNTROWS ( Stocks ), Stocks[score] > 0 )
+		lineageTag: 295d6fbf-430f-401d-bad4-09e2a319dcb4
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Sell Signals' = CALCULATE ( COUNTROWS ( Stocks ), Stocks[score] < 0 )
+		lineageTag: b4a69f3c-8d3a-4d99-b11c-21c9bdc14f1f
+		formatString: #,0
+		displayFolder: 1 Stocks
+
+	measure 'Turnover (Cr)' = SUM ( 'Stock Prices'[turnover_cr] )
+		lineageTag: 1ca3c448-0279-46a6-8f97-97b06d7ce3c9
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Avg Daily Turnover (Cr)' = DIVIDE ( [Turnover (Cr)], [Sessions] )
+		lineageTag: b0e6a969-e213-42b0-b1ee-dba313432e61
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Buy Value (Cr)' = SUM ( 'Stock Prices'[buy_value_cr] )
+		lineageTag: 093923de-8bab-4e3b-a628-6bfbe767dcea
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Sell Value (Cr)' = SUM ( 'Stock Prices'[sell_value_cr] )
+		lineageTag: 8d7248e2-951f-48d0-9e84-f058d5a804eb
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Sell Value Negative (Cr)' = - [Sell Value (Cr)]
+		lineageTag: 0ab54bde-20a0-4502-ae06-809725e97977
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Net Flow (Cr)' = [Buy Value (Cr)] - [Sell Value (Cr)]
+		lineageTag: eededb07-e623-4689-9d59-cd2a4eea04e7
+		formatString: ₹#,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Net Flow %' = DIVIDE ( [Net Flow (Cr)], [Turnover (Cr)] )
+		lineageTag: 0a368ce7-dc57-4131-b8e1-daa7cbceabde
+		formatString: 0.0%
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Net Flow Rank' = RANKX ( ALLSELECTED ( Stocks[sym] ), [Net Flow (Cr)], , DESC, DENSE )
+		lineageTag: ae9bec36-35c7-436c-9b99-62c6e61fecc0
+		formatString: #,0.00
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Show Top N Bought' = IF ( [Net Flow Rank] <= SELECTEDVALUE ( 'Top N'[Top N], 10 ), 1, 0 )
+		lineageTag: 5a8aaeca-1a50-4ec3-aabc-25fa3fe12e47
+		formatString: #,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Show Top N Sold' = 
+			VAR _r = RANKX ( ALLSELECTED ( Stocks[sym] ), [Net Flow (Cr)], , ASC, DENSE )
+			RETURN IF ( _r <= SELECTEDVALUE ( 'Top N'[Top N], 10 ), 1, 0 )
+		lineageTag: dfed2c43-e256-46dc-8f54-86b7c7b5b2bc
+		formatString: #,0
+		displayFolder: 2 Buy Sell Flow
+
+	measure 'Index Close' = SUM ( 'Index Prices'[close] )
+		lineageTag: bfddc3d9-9ee3-4c2a-b94d-62046808593f
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'NIFTY 50 Close' = CALCULATE ( [Index Close], 'Index Prices'[symbol] = "NIFTY 50" )
+		lineageTag: 3c9ad14c-ee0c-4eb5-acfe-db992790cebd
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'SENSEX Close' = CALCULATE ( [Index Close], 'Index Prices'[symbol] = "SENSEX" )
+		lineageTag: ccc56569-f9e8-4369-a999-b735dd56cc94
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'Index Last' = 
+			CALCULATE (
+			    [Index Close],
+			    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Index Prices' ) ) )
+			)
+		lineageTag: 698c206f-e1a4-4e10-ad53-4dd0cf8ebc5a
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'Index First' = 
+			CALCULATE (
+			    [Index Close],
+			    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Index Prices' ) ) )
+			)
+		lineageTag: ecab3301-bc8f-4d29-adea-94930658663a
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'Index Return %' = DIVIDE ( [Index Last], [Index First] ) - 1
+		lineageTag: 696608aa-ee49-4329-884a-7b28550a1b46
+		formatString: 0.0%
+		displayFolder: 3 Indices
+
+	measure 'NIFTY 50 Last' = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "NIFTY 50" )
+		lineageTag: bc2cbb0d-dd33-4cc7-ab7f-089acd5f4822
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'SENSEX Last' = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "SENSEX" )
+		lineageTag: 28c13091-444d-410b-bf87-e362cf8d446a
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'NIFTY 50 Return %' = CALCULATE ( [Index Return %], 'Index Prices'[symbol] = "NIFTY 50" )
+		lineageTag: 61ee411a-1bac-47a7-b386-f7a4c991603f
+		formatString: 0.0%
+		displayFolder: 3 Indices
+
+	measure 'India VIX Last' = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "INDIA VIX" )
+		lineageTag: 787f2425-dbcc-4477-89e9-db0adf465290
+		formatString: #,0.00
+		displayFolder: 3 Indices
+
+	measure 'FII Net (Cr)' = SUM ( 'FII DII'[fii_net] )
+		lineageTag: eb1fa9f2-d10b-41d0-b317-347038f16a81
+		formatString: ₹#,0
+		displayFolder: 4 FII DII (modelled)
+
+	measure 'DII Net (Cr)' = SUM ( 'FII DII'[dii_net] )
+		lineageTag: d20eac17-4e20-4d1a-9983-36e375d66ed4
+		formatString: ₹#,0
+		displayFolder: 4 FII DII (modelled)
+
+	measure 'FII Buy Days %' = DIVIDE ( CALCULATE ( COUNTROWS ( 'FII DII' ), 'FII DII'[fii_net] > 0 ), COUNTROWS ( 'FII DII' ) )
+		lineageTag: 39118497-3a43-42ba-9f0f-06cbcb9bc326
+		formatString: 0.0%
+		displayFolder: 4 FII DII (modelled)
+
+	measure 'Cumulative FII Net (Cr)' = 
+			CALCULATE (
+			    [FII Net (Cr)],
+			    FILTER ( ALLSELECTED ( 'Date'[Date] ), 'Date'[Date] <= MAX ( 'Date'[Date] ) )
+			)
+		lineageTag: 6601ddd0-3170-4437-a8f7-ef5a060edf5b
+		formatString: ₹#,0
+		displayFolder: 4 FII DII (modelled)
+
+	measure 'Cumulative DII Net (Cr)' = 
+			CALCULATE (
+			    [DII Net (Cr)],
+			    FILTER ( ALLSELECTED ( 'Date'[Date] ), 'Date'[Date] <= MAX ( 'Date'[Date] ) )
+			)
+		lineageTag: 11c58ef0-dd46-4c09-8752-87aa5408f9ac
+		formatString: ₹#,0
+		displayFolder: 4 FII DII (modelled)
+
+	measure 'NAV' = AVERAGE ( 'Fund NAV'[nav] )
+		lineageTag: 59e4b671-4774-4c58-85f8-bc16f7860b50
+		formatString: #,0.00
+		displayFolder: 5 Mutual Funds
+
+	measure 'NAV Last' = 
+			CALCULATE (
+			    AVERAGE ( 'Fund NAV'[nav] ),
+			    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) )
+			)
+		lineageTag: adf4e62d-6651-429e-8268-690ba43825b5
+		formatString: #,0.00
+		displayFolder: 5 Mutual Funds
+
+	measure 'NAV First' = 
+			CALCULATE (
+			    AVERAGE ( 'Fund NAV'[nav] ),
+			    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) )
+			)
+		lineageTag: 54c63cd8-8945-4f27-97fa-2d8dfb2ca025
+		formatString: #,0.00
+		displayFolder: 5 Mutual Funds
+
+	measure 'Fund Period Return %' = DIVIDE ( [NAV Last], [NAV First] ) - 1
+		lineageTag: e08596db-1d87-4966-8710-d430f071d879
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Fund Period CAGR %' = 
+			VAR _days = DATEDIFF ( FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) ),
+			                       LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) ), DAY )
+			RETURN IF ( _days >= 365, POWER ( DIVIDE ( [NAV Last], [NAV First] ), DIVIDE ( 365, _days ) ) - 1, [Fund Period Return %] )
+		lineageTag: 94a1875d-2db6-4edb-82de-ffccf86c2ca2
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Growth of 100' = 
+			VAR _first = CALCULATE ( [NAV First], ALLSELECTED ( 'Date' ) )
+			RETURN DIVIDE ( [NAV], _first ) * 100
+		lineageTag: 09cb3942-43f5-4a85-bbc9-f87af668a617
+		formatString: #,0.00
+		displayFolder: 5 Mutual Funds
+
+	measure 'Fund Count' = DISTINCTCOUNT ( Funds[scheme_code] )
+		lineageTag: 587ef344-6f3f-420c-98b8-e4cc1bc044fc
+		formatString: #,0
+		displayFolder: 5 Mutual Funds
+
+	measure 'Avg 3Y CAGR %' = AVERAGE ( Funds[cagr3y] )
+		lineageTag: 6fb78271-504d-481f-8953-5b63ba81edd9
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Avg 1Y Return %' = AVERAGE ( Funds[r1y] )
+		lineageTag: 1d9af659-82ec-4f2d-bbf6-e16f9b3080d5
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Avg Sharpe' = AVERAGE ( Funds[sharpe] )
+		lineageTag: 30a900ad-939b-462d-a645-f129629c2ae3
+		formatString: 0.00
+		displayFolder: 5 Mutual Funds
+
+	measure 'Avg Max Drawdown %' = AVERAGE ( Funds[max_drawdown] )
+		lineageTag: 6fa17735-b572-43d0-8b5c-ea6a41357e8c
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Avg Fund Score' = AVERAGE ( Funds[score] )
+		lineageTag: ce777f00-ecf2-4e76-8519-7ff4006ed6e3
+		formatString: 0.0
+		displayFolder: 5 Mutual Funds
+
+	measure 'SIP XIRR %' = AVERAGE ( Funds[sip_xirr] )
+		lineageTag: f0b5156b-b82c-4074-afd5-dea589d7fd6c
+		formatString: 0.0%
+		displayFolder: 5 Mutual Funds
+
+	measure 'Top Fund by Score' = MAXX ( TOPN ( 1, Funds, Funds[score], DESC ), Funds[fund] )
+		lineageTag: 3270e4fa-abae-4f43-bcae-8081bdf070aa
+		displayFolder: 5 Mutual Funds
+
+	measure 'Holding Value (Cr)' = SUM ( 'Fund Holdings'[value_cr] )
+		lineageTag: f2e9702d-11e9-4daa-ae69-81a35d3d9e56
+		formatString: ₹#,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Holding Change (Cr)' = SUM ( 'Fund Holdings'[change_cr] )
+		lineageTag: 9f871ce7-5487-4d4f-abb7-a385aa0b7b14
+		formatString: ₹#,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Bought by Funds (Cr)' = CALCULATE ( [Holding Change (Cr)], 'Fund Holdings'[change_cr] > 0 )
+		lineageTag: 1fe771d6-d917-4793-a9d3-c2e6505cc686
+		formatString: ₹#,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Sold by Funds (Cr)' = CALCULATE ( [Holding Change (Cr)], 'Fund Holdings'[change_cr] < 0 )
+		lineageTag: 81d2c7de-4ce1-4b90-a669-7833b841d0a0
+		formatString: ₹#,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Total Fund Stake %' = DIVIDE ( SUM ( 'Fund Holdings'[stake_pct] ), 100 )
+		lineageTag: 5380b904-688c-4015-aab9-7e494f2d4796
+		formatString: 0.0%
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Funds Holding' = CALCULATE ( DISTINCTCOUNT ( 'Fund Holdings'[scheme_code] ), 'Fund Holdings'[value_cr] > 0 )
+		lineageTag: 8dedf9fb-4bb0-4f20-b27c-40266703b636
+		formatString: #,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Portfolio Weight %' = DIVIDE ( SUM ( 'Fund Holdings'[weight_pct] ), 100 )
+		lineageTag: aa38d0a1-6ba2-4efe-b11c-6eb62095eef6
+		formatString: 0.0%
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'New Positions' = CALCULATE ( COUNTROWS ( 'Fund Holdings' ), 'Fund Holdings'[change] = "New" )
+		lineageTag: bf85bf0e-ad64-456c-a10f-aa3ff0bbac67
+		formatString: #,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Exited Positions' = CALCULATE ( COUNTROWS ( 'Fund Holdings' ), 'Fund Holdings'[change] = "Exit" )
+		lineageTag: 91b0e1d9-9d92-42af-ac8d-0e44e71e43a6
+		formatString: #,0
+		displayFolder: 6 Fund Holdings (modelled)
+
+	measure 'Call OI' = CALCULATE ( SUM ( 'Option Chain'[oi] ), 'Option Chain'[type] = "CE" )
+		lineageTag: d56f0350-8c45-4ce2-a7f4-8ad54d0b0d1a
+		formatString: #,0
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Put OI' = CALCULATE ( SUM ( 'Option Chain'[oi] ), 'Option Chain'[type] = "PE" )
+		lineageTag: 35ce8841-4973-4d6c-8dca-bfb7001a9a8b
+		formatString: #,0
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Call Change in OI' = CALCULATE ( SUM ( 'Option Chain'[chg_oi] ), 'Option Chain'[type] = "CE" )
+		lineageTag: 9b4e2c24-9479-41e6-8927-7d9b6e0d2648
+		formatString: #,0
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Put Change in OI' = CALCULATE ( SUM ( 'Option Chain'[chg_oi] ), 'Option Chain'[type] = "PE" )
+		lineageTag: 7118e364-7709-4749-927e-ecfaa79ac9aa
+		formatString: #,0
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'PCR' = DIVIDE ( [Put OI], [Call OI] )
+		lineageTag: 82dc4c8e-36b5-429a-acf5-e81e71316269
+		formatString: 0.00
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'PCR Mood' = SWITCH ( TRUE (), [PCR] > 1.2, "Bullish", [PCR] < 0.8, "Bearish", "Neutral" )
+		lineageTag: f5b78cc7-e6b3-4944-8b32-3e357922bac2
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Spot' = MAX ( 'Option Chain'[spot] )
+		lineageTag: a8aa7158-2b70-4525-bc67-f831cbc84759
+		formatString: #,0.00
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Call Premium' = CALCULATE ( AVERAGE ( 'Option Chain'[ltp] ), 'Option Chain'[type] = "CE" )
+		lineageTag: a9f25336-83f4-49a9-88a6-39d015b52908
+		formatString: #,0.00
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Put Premium' = CALCULATE ( AVERAGE ( 'Option Chain'[ltp] ), 'Option Chain'[type] = "PE" )
+		lineageTag: 17e8392a-55ce-45db-9e87-e04ca2086977
+		formatString: #,0.00
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'ATM IV %' = 
+			VAR _s = [Spot]
+			VAR _atm = MINX ( TOPN ( 1, VALUES ( 'Option Chain'[strike] ), ABS ( 'Option Chain'[strike] - _s ), ASC ), 'Option Chain'[strike] )
+			RETURN DIVIDE ( CALCULATE ( AVERAGE ( 'Option Chain'[iv] ), 'Option Chain'[strike] = _atm ), 100 )
+		lineageTag: 3c20592f-c04a-46c4-b3b6-3fe1d1843324
+		formatString: 0.0%
+		displayFolder: 7 Options (modelled OI)
+
+	measure 'Max Pain' = 
+			VAR _rows = 'Option Chain'
+			VAR _pain =
+			    ADDCOLUMNS (
+			        VALUES ( 'Option Chain'[strike] ),
+			        "@pain",
+			            VAR k = 'Option Chain'[strike]
+			            RETURN SUMX ( _rows, IF ( 'Option Chain'[type] = "CE", MAX ( 0, k - 'Option Chain'[strike] ), MAX ( 0, 'Option Chain'[strike] - k ) ) * 'Option Chain'[oi] )
+			    )
+			RETURN MINX ( TOPN ( 1, _pain, [@pain], ASC ), 'Option Chain'[strike] )
+		lineageTag: ce7ae7f6-3982-4cff-8f77-a665ac3c5640
+		formatString: #,0.00
+		displayFolder: 7 Options (modelled OI)
+
+	column 'Value'
+		dataType: int64
+		isHidden
+		lineageTag: 0bd4a990-0640-4e0f-a5b8-fd4b32fa2de8
+		summarizeBy: none
+		sourceColumn: [Value]
+
+	partition _Measures = calculated
+		mode: import
+		source = { 0 }
+

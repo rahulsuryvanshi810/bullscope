@@ -1,0 +1,234 @@
+// =====================================================================
+// BullScope - DAX measures
+// Create an empty table called _Measures (Enter data -> 1 blank column),
+// then paste each measure below into it (Modeling -> New measure).
+// The display folder is given in the "// Folder:" line above each block.
+// =====================================================================
+
+
+// ---------------------------------------------------------------------
+// Date table (Modeling -> New table). Mark as date table on 'Date'[Date].
+// ---------------------------------------------------------------------
+// Date =
+// ADDCOLUMNS ( CALENDAR ( DATE ( 2019, 1, 1 ), DATE ( 2027, 12, 31 ) ),
+//     "Year", YEAR ( [Date] ), "Month Start", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ), ... )
+// (full definition in scripts/build_bi_files.py -> DATE_DAX)
+
+
+// Folder: 1 Stocks
+Last Close =
+CALCULATE (
+    SUM ( 'Stock Prices'[close] ),
+    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Stock Prices' ) ) )
+)
+
+First Close =
+CALCULATE (
+    SUM ( 'Stock Prices'[close] ),
+    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Stock Prices' ) ) )
+)
+
+Period Return % = DIVIDE ( [Last Close], [First Close] ) - 1
+
+Avg Stock Return % = AVERAGEX ( VALUES ( Stocks[sym] ), [Period Return %] )
+
+Period High = MAX ( 'Stock Prices'[high] )
+
+Period Low = MIN ( 'Stock Prices'[low] )
+
+Volatility % = STDEV.S ( 'Stock Prices'[daily_return] ) * SQRT ( 252 )
+
+Total Volume = SUM ( 'Stock Prices'[volume] )
+
+Sessions = DISTINCTCOUNT ( 'Stock Prices'[date] )
+
+Advancers = COUNTROWS ( FILTER ( VALUES ( Stocks[sym] ), [Period Return %] > 0 ) )
+
+Decliners = COUNTROWS ( FILTER ( VALUES ( Stocks[sym] ), [Period Return %] < 0 ) )
+
+Market Cap (Cr) = SUM ( Stocks[mcap_cr] )
+
+BSE Close = SELECTEDVALUE ( Stocks[bse_close] )
+
+NSE BSE Spread = IF ( HASONEVALUE ( Stocks[sym] ), CALCULATE ( [Last Close], ALL ( 'Date' ) ) - [BSE Close] )
+
+Signal Score = SELECTEDVALUE ( Stocks[score] )
+
+ML Chance Up 20d % = AVERAGE ( Stocks[p_up_20d] )
+
+Buy Signals = CALCULATE ( COUNTROWS ( Stocks ), Stocks[score] > 0 )
+
+Sell Signals = CALCULATE ( COUNTROWS ( Stocks ), Stocks[score] < 0 )
+
+
+// Folder: 2 Buy Sell Flow
+Turnover (Cr) = SUM ( 'Stock Prices'[turnover_cr] )
+
+Avg Daily Turnover (Cr) = DIVIDE ( [Turnover (Cr)], [Sessions] )
+
+Buy Value (Cr) = SUM ( 'Stock Prices'[buy_value_cr] )
+
+Sell Value (Cr) = SUM ( 'Stock Prices'[sell_value_cr] )
+
+Sell Value Negative (Cr) = - [Sell Value (Cr)]
+
+Net Flow (Cr) = [Buy Value (Cr)] - [Sell Value (Cr)]
+
+Net Flow % = DIVIDE ( [Net Flow (Cr)], [Turnover (Cr)] )
+
+Net Flow Rank = RANKX ( ALLSELECTED ( Stocks[sym] ), [Net Flow (Cr)], , DESC, DENSE )
+
+Show Top N Bought = IF ( [Net Flow Rank] <= SELECTEDVALUE ( 'Top N'[Top N], 10 ), 1, 0 )
+
+Show Top N Sold =
+VAR _r = RANKX ( ALLSELECTED ( Stocks[sym] ), [Net Flow (Cr)], , ASC, DENSE )
+RETURN IF ( _r <= SELECTEDVALUE ( 'Top N'[Top N], 10 ), 1, 0 )
+
+
+// Folder: 3 Indices
+Index Close = SUM ( 'Index Prices'[close] )
+
+NIFTY 50 Close = CALCULATE ( [Index Close], 'Index Prices'[symbol] = "NIFTY 50" )
+
+SENSEX Close = CALCULATE ( [Index Close], 'Index Prices'[symbol] = "SENSEX" )
+
+Index Last =
+CALCULATE (
+    [Index Close],
+    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Index Prices' ) ) )
+)
+
+Index First =
+CALCULATE (
+    [Index Close],
+    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Index Prices' ) ) )
+)
+
+Index Return % = DIVIDE ( [Index Last], [Index First] ) - 1
+
+NIFTY 50 Last = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "NIFTY 50" )
+
+SENSEX Last = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "SENSEX" )
+
+NIFTY 50 Return % = CALCULATE ( [Index Return %], 'Index Prices'[symbol] = "NIFTY 50" )
+
+India VIX Last = CALCULATE ( [Index Last], 'Index Prices'[symbol] = "INDIA VIX" )
+
+
+// Folder: 4 FII DII (modelled)
+FII Net (Cr) = SUM ( 'FII DII'[fii_net] )
+
+DII Net (Cr) = SUM ( 'FII DII'[dii_net] )
+
+FII Buy Days % = DIVIDE ( CALCULATE ( COUNTROWS ( 'FII DII' ), 'FII DII'[fii_net] > 0 ), COUNTROWS ( 'FII DII' ) )
+
+Cumulative FII Net (Cr) =
+CALCULATE (
+    [FII Net (Cr)],
+    FILTER ( ALLSELECTED ( 'Date'[Date] ), 'Date'[Date] <= MAX ( 'Date'[Date] ) )
+)
+
+Cumulative DII Net (Cr) =
+CALCULATE (
+    [DII Net (Cr)],
+    FILTER ( ALLSELECTED ( 'Date'[Date] ), 'Date'[Date] <= MAX ( 'Date'[Date] ) )
+)
+
+
+// Folder: 5 Mutual Funds
+NAV = AVERAGE ( 'Fund NAV'[nav] )
+
+NAV Last =
+CALCULATE (
+    AVERAGE ( 'Fund NAV'[nav] ),
+    LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) )
+)
+
+NAV First =
+CALCULATE (
+    AVERAGE ( 'Fund NAV'[nav] ),
+    FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) )
+)
+
+Fund Period Return % = DIVIDE ( [NAV Last], [NAV First] ) - 1
+
+Fund Period CAGR % =
+VAR _days = DATEDIFF ( FIRSTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) ),
+                       LASTNONBLANK ( 'Date'[Date], CALCULATE ( COUNTROWS ( 'Fund NAV' ) ) ), DAY )
+RETURN IF ( _days >= 365, POWER ( DIVIDE ( [NAV Last], [NAV First] ), DIVIDE ( 365, _days ) ) - 1, [Fund Period Return %] )
+
+Growth of 100 =
+VAR _first = CALCULATE ( [NAV First], ALLSELECTED ( 'Date' ) )
+RETURN DIVIDE ( [NAV], _first ) * 100
+
+Fund Count = DISTINCTCOUNT ( Funds[scheme_code] )
+
+Avg 3Y CAGR % = AVERAGE ( Funds[cagr3y] )
+
+Avg 1Y Return % = AVERAGE ( Funds[r1y] )
+
+Avg Sharpe = AVERAGE ( Funds[sharpe] )
+
+Avg Max Drawdown % = AVERAGE ( Funds[max_drawdown] )
+
+Avg Fund Score = AVERAGE ( Funds[score] )
+
+SIP XIRR % = AVERAGE ( Funds[sip_xirr] )
+
+Top Fund by Score = MAXX ( TOPN ( 1, Funds, Funds[score], DESC ), Funds[fund] )
+
+
+// Folder: 6 Fund Holdings (modelled)
+Holding Value (Cr) = SUM ( 'Fund Holdings'[value_cr] )
+
+Holding Change (Cr) = SUM ( 'Fund Holdings'[change_cr] )
+
+Bought by Funds (Cr) = CALCULATE ( [Holding Change (Cr)], 'Fund Holdings'[change_cr] > 0 )
+
+Sold by Funds (Cr) = CALCULATE ( [Holding Change (Cr)], 'Fund Holdings'[change_cr] < 0 )
+
+Total Fund Stake % = DIVIDE ( SUM ( 'Fund Holdings'[stake_pct] ), 100 )
+
+Funds Holding = CALCULATE ( DISTINCTCOUNT ( 'Fund Holdings'[scheme_code] ), 'Fund Holdings'[value_cr] > 0 )
+
+Portfolio Weight % = DIVIDE ( SUM ( 'Fund Holdings'[weight_pct] ), 100 )
+
+New Positions = CALCULATE ( COUNTROWS ( 'Fund Holdings' ), 'Fund Holdings'[change] = "New" )
+
+Exited Positions = CALCULATE ( COUNTROWS ( 'Fund Holdings' ), 'Fund Holdings'[change] = "Exit" )
+
+
+// Folder: 7 Options (modelled OI)
+Call OI = CALCULATE ( SUM ( 'Option Chain'[oi] ), 'Option Chain'[type] = "CE" )
+
+Put OI = CALCULATE ( SUM ( 'Option Chain'[oi] ), 'Option Chain'[type] = "PE" )
+
+Call Change in OI = CALCULATE ( SUM ( 'Option Chain'[chg_oi] ), 'Option Chain'[type] = "CE" )
+
+Put Change in OI = CALCULATE ( SUM ( 'Option Chain'[chg_oi] ), 'Option Chain'[type] = "PE" )
+
+PCR = DIVIDE ( [Put OI], [Call OI] )
+
+PCR Mood = SWITCH ( TRUE (), [PCR] > 1.2, "Bullish", [PCR] < 0.8, "Bearish", "Neutral" )
+
+Spot = MAX ( 'Option Chain'[spot] )
+
+Call Premium = CALCULATE ( AVERAGE ( 'Option Chain'[ltp] ), 'Option Chain'[type] = "CE" )
+
+Put Premium = CALCULATE ( AVERAGE ( 'Option Chain'[ltp] ), 'Option Chain'[type] = "PE" )
+
+ATM IV % =
+VAR _s = [Spot]
+VAR _atm = MINX ( TOPN ( 1, VALUES ( 'Option Chain'[strike] ), ABS ( 'Option Chain'[strike] - _s ), ASC ), 'Option Chain'[strike] )
+RETURN DIVIDE ( CALCULATE ( AVERAGE ( 'Option Chain'[iv] ), 'Option Chain'[strike] = _atm ), 100 )
+
+Max Pain =
+VAR _rows = 'Option Chain'
+VAR _pain =
+    ADDCOLUMNS (
+        VALUES ( 'Option Chain'[strike] ),
+        "@pain",
+            VAR k = 'Option Chain'[strike]
+            RETURN SUMX ( _rows, IF ( 'Option Chain'[type] = "CE", MAX ( 0, k - 'Option Chain'[strike] ), MAX ( 0, 'Option Chain'[strike] - k ) ) * 'Option Chain'[oi] )
+    )
+RETURN MINX ( TOPN ( 1, _pain, [@pain], ASC ), 'Option Chain'[strike] )

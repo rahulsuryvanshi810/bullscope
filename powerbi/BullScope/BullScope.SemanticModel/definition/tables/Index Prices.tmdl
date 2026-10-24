@@ -1,0 +1,65 @@
+table 'Index Prices'
+	lineageTag: 7e570ddf-8270-40a8-a369-b584ff5e9ff0
+
+	column 'date'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: dc713d96-0c0f-4195-817a-f08a1745d6d8
+		summarizeBy: none
+		sourceColumn: date
+
+	column 'symbol'
+		dataType: string
+		lineageTag: 28f49481-a0a0-4dc4-a720-9bdf1c11f735
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column 'open'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 98ae4334-6c12-4ce8-ae34-0454cac5b68c
+		summarizeBy: none
+		sourceColumn: open
+
+	column 'high'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 988c24c9-61b1-4d22-a280-1c4510435a10
+		summarizeBy: none
+		sourceColumn: high
+
+	column 'low'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 405cacec-8774-49a9-b7d2-1e02ff01cf99
+		summarizeBy: none
+		sourceColumn: low
+
+	column 'close'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f143262f-dc5c-4eed-8da0-365bf89897b9
+		summarizeBy: none
+		sourceColumn: close
+
+	partition 'Index Prices' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_index_prices.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"date", "symbol", "open", "high", "low", "close"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"date", "open", "high", "low", "close"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"date", type date},
+				        {"symbol", type text},
+				        {"open", type number},
+				        {"high", type number},
+				        {"low", type number},
+				        {"close", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

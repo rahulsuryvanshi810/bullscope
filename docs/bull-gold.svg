@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1c1"/>
+      <stop offset=".45" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#8a6a1f"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#gd)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <!-- horns -->
+    <path d="M128 142 C 86 124, 52 92, 40 44 C 62 82, 98 108, 146 124" fill="url(#gd)" fill-opacity=".12"/>
+    <path d="M272 142 C 314 124, 348 92, 360 44 C 338 82, 302 108, 254 124" fill="url(#gd)" fill-opacity=".12"/>
+    <!-- head outline -->
+    <path d="M128 142 L160 120 L240 120 L272 142 L302 172 L270 202 L256 282 L230 342 L200 362 L170 342 L144 282 L130 202 L98 172 Z" fill="url(#gd)" fill-opacity=".04"/>
+    <!-- ears -->
+    <path d="M98 172 L56 184 L112 198 Z M302 172 L344 184 L288 198 Z" fill="url(#gd)" fill-opacity=".08"/>
+    <!-- facets -->
+    <path d="M160 120 L200 200 L240 120 M128 142 L200 200 L272 142 M130 202 L200 200 L270 202 M144 282 L200 200 L256 282
+             M144 282 L172 300 L200 200 L228 300 L256 282 M172 300 L200 362 L228 300 M172 300 L228 300"/>
+    <!-- eyes and nostrils -->
+    <path d="M158 214 L178 222 L160 228 Z M242 214 L222 222 L240 228 Z" fill="url(#gd)" fill-opacity=".5"/>
+    <circle cx="188" cy="322" r="4" fill="url(#gd)" fill-opacity=".6"/>
+    <circle cx="212" cy="322" r="4" fill="url(#gd)" fill-opacity=".6"/>
+  </g>
+  <g fill="#f5d27a">
+    <circle cx="40" cy="44" r="3"/><circle cx="360" cy="44" r="3"/><circle cx="160" cy="120" r="2.6"/><circle cx="240" cy="120" r="2.6"/>
+    <circle cx="128" cy="142" r="2.6"/><circle cx="272" cy="142" r="2.6"/><circle cx="98" cy="172" r="2.4"/><circle cx="302" cy="172" r="2.4"/>
+    <circle cx="56" cy="184" r="2.2"/><circle cx="344" cy="184" r="2.2"/><circle cx="200" cy="200" r="3.4"/><circle cx="130" cy="202" r="2.2"/>
+    <circle cx="270" cy="202" r="2.2"/><circle cx="144" cy="282" r="2.4"/><circle cx="256" cy="282" r="2.4"/><circle cx="172" cy="300" r="2.2"/>
+    <circle cx="228" cy="300" r="2.2"/><circle cx="200" cy="362" r="3"/>
+  </g>
+</svg>

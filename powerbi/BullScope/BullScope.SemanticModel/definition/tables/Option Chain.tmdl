@@ -1,0 +1,136 @@
+table 'Option Chain'
+	lineageTag: 0f844fef-1931-49ee-a56c-0941fbf24050
+
+	column 'underlying'
+		dataType: string
+		lineageTag: ccf3a171-56dc-4907-ba6c-34ab6712303a
+		summarizeBy: none
+		sourceColumn: underlying
+
+	column 'expiry'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: 310c0c00-3fa7-4104-9bf9-0e27dc96925e
+		summarizeBy: none
+		sourceColumn: expiry
+
+	column 'strike'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 23e2fcb4-72d8-467d-894a-05e430b187ef
+		summarizeBy: none
+		sourceColumn: strike
+
+	column 'type'
+		dataType: string
+		lineageTag: 766ecb15-474e-4c19-aef9-12766c006f61
+		summarizeBy: none
+		sourceColumn: type
+
+	column 'ltp'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 134c6c92-ec5b-427c-9fde-4fbf3ff350bf
+		summarizeBy: none
+		sourceColumn: ltp
+
+	column 'iv'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: db20a56e-dc81-4fe7-8eda-8bbb71710434
+		summarizeBy: none
+		sourceColumn: iv
+
+	column 'oi'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a6f2f7b8-0cf3-4b58-9910-8be58ce21ea3
+		summarizeBy: sum
+		sourceColumn: oi
+
+	column 'chg_oi'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 03c72ba8-d605-4770-8a63-f881ffd0f9d5
+		summarizeBy: sum
+		sourceColumn: chg_oi
+
+	column 'volume'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c0e9ab30-ed26-42e9-97e0-11b7f8102383
+		summarizeBy: sum
+		sourceColumn: volume
+
+	column 'delta'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 680ac07a-2a93-4d62-bc83-5dc0d9441fa5
+		summarizeBy: none
+		sourceColumn: delta
+
+	column 'gamma'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: dd59ba71-36b8-4481-bb3a-4e3e7c52fa17
+		summarizeBy: none
+		sourceColumn: gamma
+
+	column 'theta'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 2a25a888-0f02-4ad0-a706-7ef466aa9385
+		summarizeBy: none
+		sourceColumn: theta
+
+	column 'vega'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 63f2ae24-fc3d-4348-808d-4127610461e3
+		summarizeBy: none
+		sourceColumn: vega
+
+	column 'spot'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c8fe3ccd-c8b8-49c6-ad30-49cf43e458fc
+		summarizeBy: none
+		sourceColumn: spot
+
+	column 'lot_size'
+		dataType: int64
+		formatString: 0
+		lineageTag: b253d218-6c4a-47ea-8906-17f2747b6dba
+		summarizeBy: none
+		sourceColumn: lot_size
+
+	partition 'Option Chain' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_option_chain.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"underlying", "expiry", "strike", "type", "ltp", "iv", "oi", "chg_oi", "volume", "delta", "gamma", "theta", "vega", "spot", "lot_size"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"expiry", "strike", "ltp", "iv", "oi", "chg_oi", "volume", "delta", "gamma", "theta", "vega", "spot", "lot_size"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"underlying", type text},
+				        {"expiry", type date},
+				        {"strike", type number},
+				        {"type", type text},
+				        {"ltp", type number},
+				        {"iv", type number},
+				        {"oi", type number},
+				        {"chg_oi", type number},
+				        {"volume", type number},
+				        {"delta", type number},
+				        {"gamma", type number},
+				        {"theta", type number},
+				        {"vega", type number},
+				        {"spot", type number},
+				        {"lot_size", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

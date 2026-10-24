@@ -1,0 +1,105 @@
+table 'Stock Prices'
+	lineageTag: c241330b-01a9-471f-9e8a-774bcf36d58b
+
+	column 'date'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: 6c307511-b2b9-437a-a8df-6ec4ce4a2bbd
+		summarizeBy: none
+		sourceColumn: date
+
+	column 'symbol'
+		dataType: string
+		lineageTag: 371ecd7b-27cd-4130-8722-9389571aa876
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column 'open'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 1a2a73ed-562b-4f79-8374-59eef50bea63
+		summarizeBy: none
+		sourceColumn: open
+
+	column 'high'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5be6128e-18c2-4797-a142-ea7d17be3111
+		summarizeBy: none
+		sourceColumn: high
+
+	column 'low'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 43b7a3a6-9a8d-4a03-980d-7b71d8f56413
+		summarizeBy: none
+		sourceColumn: low
+
+	column 'close'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 759cde66-bacf-43d0-8b1f-9163ce9ff57f
+		summarizeBy: none
+		sourceColumn: close
+
+	column 'volume'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: ec1b8ca1-f91e-4d4c-9ff4-9b7889463e85
+		summarizeBy: sum
+		sourceColumn: volume
+
+	column 'daily_return'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 4b0dbb41-8d52-48f1-942c-3fe860e7a113
+		summarizeBy: none
+		sourceColumn: daily_return
+
+	column 'turnover_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: e2acf72f-9e57-4f7a-a0ee-89aed453dd32
+		summarizeBy: sum
+		sourceColumn: turnover_cr
+
+	column 'buy_value_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3139d32c-93cd-49bf-9c94-1cf0dc98d2c1
+		summarizeBy: sum
+		sourceColumn: buy_value_cr
+
+	column 'sell_value_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a9488d99-0bbb-4599-91ce-5dd2b45ed1f0
+		summarizeBy: sum
+		sourceColumn: sell_value_cr
+
+	partition 'Stock Prices' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_stock_prices.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"date", "symbol", "open", "high", "low", "close", "volume", "daily_return", "turnover_cr", "buy_value_cr", "sell_value_cr"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"date", "open", "high", "low", "close", "volume", "daily_return", "turnover_cr", "buy_value_cr", "sell_value_cr"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"date", type date},
+				        {"symbol", type text},
+				        {"open", type number},
+				        {"high", type number},
+				        {"low", type number},
+				        {"close", type number},
+				        {"volume", type number},
+				        {"daily_return", type number},
+				        {"turnover_cr", type number},
+				        {"buy_value_cr", type number},
+				        {"sell_value_cr", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

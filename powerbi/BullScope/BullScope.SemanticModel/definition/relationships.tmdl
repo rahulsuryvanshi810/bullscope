@@ -1,0 +1,31 @@
+relationship 23b8c1e9-3924-46de-beb1-3b9046685257
+	fromColumn: 'Stock Prices'.'date'
+	toColumn: 'Date'.'Date'
+
+relationship bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9
+	fromColumn: 'Stock Prices'.'symbol'
+	toColumn: 'Stocks'.'sym'
+
+relationship 972a8469-1641-4f82-8b9d-2434e465e150
+	fromColumn: 'Index Prices'.'date'
+	toColumn: 'Date'.'Date'
+
+relationship 17fc695a-07a0-4a6e-8822-e8f36c031199
+	fromColumn: 'Fund NAV'.'date'
+	toColumn: 'Date'.'Date'
+
+relationship 9a1de644-815e-46d1-bb8f-aa1837f8a88b
+	fromColumn: 'Fund NAV'.'scheme_code'
+	toColumn: 'Funds'.'scheme_code'
+
+relationship b74d0fb1-32e7-4629-8fad-c1a606cb0fb3
+	fromColumn: 'Fund Holdings'.'scheme_code'
+	toColumn: 'Funds'.'scheme_code'
+
+relationship 6b65a6a4-8b81-48f6-b38a-088ca65ed389
+	fromColumn: 'Fund Holdings'.'symbol'
+	toColumn: 'Stocks'.'sym'
+
+relationship 47378190-96da-4dac-b2ff-5d2a386ecbe0
+	fromColumn: 'FII DII'.'date'
+	toColumn: 'Date'.'Date'

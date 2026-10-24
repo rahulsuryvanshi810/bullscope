@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BullScope</title>
+<meta name="description" content="Indian stock market, F&O and mutual fund analytics: NSE/BSE prices, buy/sell flow, option chain, fund returns, holdings and a robo-advisor.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  try { const t = localStorage.getItem("dsp-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { const s = JSON.parse(localStorage.getItem("dsp-state") || "{}"); document.documentElement.dataset.bg = s.bg || "gold"; } catch (e) { document.documentElement.dataset.bg = "gold"; }
+</script>
+</head>
+<body>
+<canvas id="bgfx" aria-hidden="true"></canvas>
+<img id="goldBull" src="bull-gold.svg" alt="" aria-hidden="true">
+<header class="topbar">
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div class="brand">
+    <img class="brand-mark" id="brandLogo" src="logo.svg" alt="BullScope logo" width="34" height="34">
+    <div>BullScope<small>Market · F&amp;O · Mutual Fund Analytics</small></div>
+  </div>
+  <button type="button" class="gs-open" id="gsOpen" aria-label="Search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <span class="gs-ph">Search stocks, funds, crypto, news…</span><kbd>Ctrl K</kbd></button>
+  <div class="tape" aria-label="Index ticker"><div class="tape-inner" id="tape"></div></div>
+  <div class="status-pill"><span class="dot" id="mktDot"></span><span id="mktStatus"></span></div>
+  <div class="bg-wrap"><button class="icon-btn" id="bgBtn" aria-label="Change background" title="Change background">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.9 1.2-1.8-.5-1.1.2-2.2 1.4-2.2H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg></button>
+    <div class="bg-menu hidden" id="bgMenu"></div></div>
+  <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav" id="nav">
+      <div class="nav-group">Equity</div>
+      <a href="#overview" data-page="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Market Overview</a>
+      <a href="#stocks" data-page="stocks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg>Stock Explorer</a>
+      <a href="#compare" data-page="compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Compare</a>
+      <a href="#flow" data-page="flow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17V7M3 11l4-4 4 4M17 7v10M13 13l4 4 4-4"/></svg>Buy / Sell Flow</a>
+      <div class="nav-group">Live</div>
+      <a href="#news" data-page="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 13h5"/></svg>Market News</a>
+      <a href="#crypto" data-page="crypto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 7.5h4a2 2 0 0 1 0 4h-4zm0 4h4.5a2 2 0 0 1 0 4H9.5zM9.5 7.5v8M11 6v1.5M11 15.5V17"/></svg>Crypto &amp; Bitcoin</a>
+      <div class="nav-group">Derivatives</div>
+      <a href="#fno" data-page="fno"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16M6 15l3-6 3 4 3-8 3 10"/></svg>F&amp;O · Option Chain</a>
+      <div class="nav-group">Mutual Funds</div>
+      <a href="#funds" data-page="funds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 6"/></svg>Fund Screener</a>
+      <a href="#holdings" data-page="holdings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6"/></svg>Fund Holdings</a>
+      <a href="#advisor" data-page="advisor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>Advisor &amp; Picks</a>
+      <div class="nav-group">Personal</div>
+      <a href="#portfolio" data-page="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>My Portfolio</a>
+      <div class="nav-group">Project</div>
+      <a href="#about" data-page="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>Methodology</a>
+    </nav>
+    <div class="side-note" id="sideNote"></div>
+  </aside>
+
+  <main>
+    <div class="filters" id="rangeBar">
+      <span class="label">Period</span>
+      <div class="seg" id="rangeSeg"></div>
+      <input type="date" class="date-in" id="dFrom" aria-label="From date">
+      <span class="mut">to</span>
+      <input type="date" class="date-in" id="dTo" aria-label="To date">
+      <span class="range-text" id="rangeText"></span>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="page" id="page-overview">
+      <div class="page-head"><div><h1>Market Overview</h1><p>Indian indices, sector moves and the NIFTY 50 universe for the selected period.</p></div></div>
+      <div class="hero" id="ovHero"></div>
+      <div class="tiles" id="ovTiles"></div>
+      <div class="grid">
+        <div class="card c8">
+          <div class="card-head"><div><h3 id="ovIdxTitle">NIFTY 50</h3><p class="sub">Daily close for the selected period</p></div><div class="seg" id="ovIdxSeg"></div></div>
+          <div class="chart" id="ovIdxChart"></div>
+        </div>
+        <div class="card c4">
+          <div class="card-head"><div><h3>Sector performance</h3><p class="sub">Sector index return in the period</p></div></div>
+          <div class="chart" id="ovSector"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>Market heatmap</h3><p class="sub">Box size = market cap · colour = return in the period. Click a stock to open it.</p></div><div class="legend" id="heatLegend"></div></div>
+          <div class="chart tall" id="ovHeat"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c4"><div class="card-head"><div><h3>Top gainers</h3><p class="sub">Period return</p></div></div><div class="table-wrap" id="ovGainers"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Top losers</h3><p class="sub">Period return</p></div></div><div class="table-wrap" id="ovLosers"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Most active</h3><p class="sub">Total turnover in the period</p></div></div><div class="table-wrap" id="ovActive"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>Latest market headlines</h3><p class="sub">Indian markets, stocks, funds and the economy. <a href="#news">All news →</a></p></div><span class="badge b-neu" id="ovNewsStatus">loading…</span></div>
+          <div id="ovNews" class="news-cols"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>My watchlists &amp; price alerts</h3><p class="sub">Keep separate lists (long term, trading, dividend…), set alert prices, and see each list's day at a glance. Saved in this browser.</p></div></div>
+          <div class="table-wrap" id="ovWatch"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c8">
+          <div class="card-head"><div><h3 id="ovSeasonTitle">Seasonality</h3><p class="sub">Monthly return of the selected index, by year and month. The bottom row is the average for each month.</p></div></div>
+          <div class="chart tall" id="ovSeason"></div>
+        </div>
+        <div class="card c4">
+          <div class="card-head"><div><h3>Near 52-week high / low</h3><p class="sub">Latest close vs the highest and lowest close of the last 52 weeks</p></div><div class="seg" id="ov52Seg"></div></div>
+          <div class="table-wrap" id="ov52"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section class="page" id="page-compare">
+      <div class="page-head"><div><h1>Compare</h1><p>Put up to 5 stocks, indices or mutual funds side by side: growth, risk, return and how closely they move together.</p></div></div>
+      <div class="filters">
+        <span class="label">Comparing</span><div class="chips" id="cmpChips"></div>
+        <select id="cmpAdd"></select>
+      </div>
+      <div class="grid">
+        <div class="card c8"><div class="card-head"><div><h3>Growth of ₹100</h3><p class="sub">Each item rebased to 100 at the start of the period</p></div></div><div class="chart tall" id="cmpGrowth"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>How closely they move together</h3><p class="sub">Correlation of daily returns: 1 = move in lockstep, 0 = unrelated</p></div></div><div class="chart tall" id="cmpCorr"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c12"><div class="card-head"><div><h3>Risk and return</h3><p class="sub">For the selected period</p></div></div><div class="table-wrap" id="cmpTable"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c12"><div class="card-head"><div><h3>Drawdown</h3><p class="sub">How far each item sat below its previous peak, %</p></div></div><div class="chart" id="cmpDD"></div></div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="page" id="page-news">
+      <div class="page-head"><div><h1>Market News</h1><p>Latest headlines on Indian markets, stocks, mutual funds, the economy, global markets and crypto, from 90+ publishers. Each story is tagged with the companies and coins it mentions and a quick tone check.</p></div>
+        <div style="display:flex;gap:8px;align-items:center"><span class="badge b-neu" id="newsStatus">loading…</span><button type="button" class="btn" id="newsRefresh">↻ Refresh</button></div></div>
+      <div class="news-tabs" id="newsTabs"></div>
+      <div class="filters">
+        <span class="label">Topic</span><div class="chips" id="newsCats"></div>
+        <div class="seg" id="newsTone"></div>
+        <select id="newsSrc" aria-label="Source"></select>
+        <input class="text-in" id="newsSearch" placeholder="Search headlines…" style="flex:1;min-width:180px;max-width:300px">
+        <span class="label" style="margin-left:auto">View</span><div class="seg" id="newsView"></div>
+      </div>
+      <p class="note hidden" id="newsForYouNote" style="margin:-6px 2px 14px"></p>
+      <div id="newsVideos" class="hidden">
+        <div class="filters"><span class="label">Channel</span><div class="chips" id="vidChans"></div></div>
+        <div class="video-grid" id="vidGrid"></div>
+      </div>
+      <div class="grid" id="newsInsights">
+        <div class="card c4"><div class="card-head"><div><h3>News mood</h3><p class="sub">Tone of the headlines shown</p></div></div><div id="newsMood"></div></div>
+        <div class="card c8"><div class="card-head"><div><h3>In the news</h3><p class="sub">NIFTY 50 companies and coins mentioned most. Click one to filter.</p></div></div><div class="chips" id="newsTags"></div></div>
+      </div>
+      <div id="newsTopWrap"><div class="section-title">Top stories</div><div id="newsTop" class="top-stories"></div><div class="section-title">More headlines</div></div>
+      <div id="newsList" class="news-grid"></div>
+      <div style="text-align:center;margin:16px 0"><button type="button" class="btn" id="newsMore">Show more</button></div>
+      <div class="vp hidden" id="vp" role="dialog" aria-modal="true" aria-label="Video player">
+        <div class="vp-box"><div class="vp-head"><b id="vpTitle"></b><button type="button" class="icon-btn" id="vpClose" aria-label="Close video">✕</button></div>
+          <div class="vp-frame"><iframe id="vpFrame" title="Market video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="vp-foot"><span id="vpMeta" class="mut"></span><a id="vpYT" class="btn sm" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a></div></div>
+      </div>
+      <p class="disclaimer">Headlines link to the original publishers. Tone tags come from a simple word list and can be wrong. BullScope does not write or edit news.</p>
+    </section>
+
+    <!-- CRYPTO -->
+    <section class="page" id="page-crypto">
+      <div class="page-head"><div><h1>Crypto &amp; Bitcoin</h1><p>Live prices for the top coins, Bitcoin charts, market dominance, the Fear &amp; Greed index and crypto news. Prices refresh every minute.</p></div>
+        <div style="display:flex;gap:8px;align-items:center"><div class="seg" id="cryCur"></div><span class="badge b-neu" id="cryStatus">loading…</span></div></div>
+      <div class="tiles" id="cryTiles"></div>
+      <div class="grid">
+        <div class="card c8">
+          <div class="card-head"><div><h3 id="cryChartTitle">Bitcoin</h3><p class="sub">Price history. Click any coin in the table to chart it.</p></div><div class="seg" id="cryDays"></div></div>
+          <div class="chart tall" id="cryChart"></div>
+        </div>
+        <div class="card c4">
+          <div class="card-head"><div><h3>Fear &amp; Greed index</h3><p class="sub">Crypto market sentiment, 0 = extreme fear, 100 = extreme greed</p></div></div>
+          <div class="chart short" id="cryFng"></div>
+          <div class="chart short" id="cryFngHist"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c12"><div class="card-head"><div><h3>Top 25 coins by market cap</h3><p class="sub">Live from CoinGecko</p></div></div><div class="table-wrap" id="cryTable"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c8"><div class="card-head"><div><h3>Bitcoin vs NIFTY 50 vs Gold</h3><p class="sub">Growth of ₹100 over the last year (gold = Nippon India Gold Savings Fund NAV)</p></div></div><div class="chart" id="cryVs"></div><div id="cryVsStats" class="legend"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Crypto news</h3><p class="sub">Latest headlines</p></div></div><div id="cryNews"></div></div>
+      </div>
+      <p class="disclaimer">Crypto assets are unregulated in India and highly volatile. In India, gains on crypto are taxed at a flat 30% and transfers attract 1% TDS (check the current rules). Prices: CoinGecko · Fear &amp; Greed: alternative.me. Not investment advice.</p>
+    </section>
+
+    <!-- STOCKS -->
+    <section class="page" id="page-stocks">
+      <div class="page-head">
+        <div><h1>Stock Explorer</h1><p>Candles, moving averages, volume, RSI, fundamentals, shareholding and a 60-day outlook for any NIFTY 50 stock.</p></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button type="button" class="btn" id="stWatch">☆ Watch</button><button type="button" class="btn" id="stCompare">Compare</button>
+          <div class="searchbox"><input class="text-in" id="stockSearch" list="stockList" placeholder="Search stock, e.g. RELIANCE"><datalist id="stockList"></datalist></div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px"><div class="stock-head" id="stHead"></div></div>
+      <div class="tiles" id="stTiles"></div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>Price chart</h3><p class="sub">Candles with volume and RSI (14). Drag or scroll to zoom.</p></div>
+            <div class="chips" id="stOverlays"></div></div>
+          <div class="chart xtall" id="stCandle"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c4"><div class="card-head"><div><h3>Fundamentals</h3><p class="sub">Yahoo Finance, latest</p></div></div><div class="kv" id="stFund"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Shareholding</h3><p class="sub">Promoters / institutions / public</p></div></div><div id="stShare"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Technical signal</h3><p class="sub">Five rules, scored −5 to +5</p></div></div><div id="stSignal"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c8">
+          <div class="card-head"><div><h3>60-session outlook (Monte Carlo)</h3><p class="sub">3,000 simulated paths from the last year of daily returns. Shaded: 5–95% and 25–75% ranges.</p></div></div>
+          <div class="chart" id="stMC"></div>
+        </div>
+        <div class="card c4"><div class="card-head"><div><h3>In the news</h3><p class="sub">Latest headlines that mention this company</p></div></div><div id="stNews"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c4"><div class="card-head"><div><h3>Sector peers</h3><p class="sub">Period return</p></div></div><div class="table-wrap" id="stPeers"></div></div>
+      </div>
+    </section>
+
+    <!-- FLOW -->
+    <section class="page" id="page-flow">
+      <div class="page-head"><div><h1>Buy / Sell Flow</h1><p>Which shares were bought most and sold most in the period. Each day's turnover is split into buying and selling by where the close sits in the day's high–low range (money-flow method).</p></div></div>
+      <div class="tiles" id="flTiles"></div>
+      <div class="grid">
+        <div class="card c6"><div class="card-head"><div><h3>Most bought</h3><p class="sub">Net buying (₹ Cr) in the period</p></div></div><div class="chart" id="flBought"></div></div>
+        <div class="card c6"><div class="card-head"><div><h3>Most sold</h3><p class="sub">Net selling (₹ Cr) in the period</p></div></div><div class="chart" id="flSold"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c7">
+          <div class="card-head"><div><h3 id="flStockTitle">Buying vs selling</h3><p class="sub">Weekly buy value (up) and sell value (down), ₹ Cr</p></div><select id="flStock"></select></div>
+          <div class="chart" id="flStockChart"></div>
+        </div>
+        <div class="card c5"><div class="card-head"><div><h3>Sector net flow</h3><p class="sub">₹ Cr in the period</p></div></div><div class="chart" id="flSector"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c6"><div class="card-head"><div><h3>Volume shockers</h3><p class="sub">Last session volume vs 20-day average</p></div></div><div class="table-wrap" id="flShock"></div></div>
+        <div class="card c6"><div class="card-head"><div><h3>Full flow table</h3><p class="sub">All 51 stocks, period totals</p></div></div><div class="table-wrap scroll-y" id="flTable"></div></div>
+      </div>
+      <div class="page-head" style="margin-top:8px"><div><h1 style="font-size:18px">FII / DII activity</h1><p>Foreign and domestic institutional net buying in the cash market.</p></div><span class="modelled">◇ Modelled data: NSE does not offer a free history API. Driven by real NIFTY moves.</span></div>
+      <div class="tiles" id="fiiTiles"></div>
+      <div class="grid">
+        <div class="card c8"><div class="card-head"><div><h3>Net investment</h3><p class="sub" id="fiiSub">₹ Cr</p></div></div><div class="chart" id="fiiBars"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Cumulative net flow</h3><p class="sub">₹ Cr since period start</p></div></div><div class="chart" id="fiiCum"></div></div>
+      </div>
+    </section>
+
+    <!-- F&O -->
+    <section class="page" id="page-fno">
+      <div class="page-head"><div><h1>F&amp;O · Option Chain</h1><p>Option chain with Greeks, open interest, PCR, max pain, IV smile and a strategy payoff builder.</p></div>
+        <span class="modelled">◇ Spot and India VIX are real. Premiums are Black-Scholes prices; OI and volume are modelled.</span></div>
+      <div class="filters">
+        <span class="label">Underlying</span><div class="chips" id="fnoUnd"></div>
+        <span class="label" style="margin-left:8px">Expiry</span><div class="seg" id="fnoExp"></div>
+      </div>
+      <div class="tiles" id="fnoTiles"></div>
+      <div class="grid">
+        <div class="card c6"><div class="card-head"><div><h3>Open interest by strike</h3><p class="sub">Calls vs puts, contracts</p></div><div class="legend" id="oiLegend"></div></div><div class="chart" id="fnoOI"></div></div>
+        <div class="card c6"><div class="card-head"><div><h3>Change in open interest</h3><p class="sub">Today's build-up (+) or unwinding (−)</p></div></div><div class="chart" id="fnoChg"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>Option chain</h3><p class="sub">Shaded = in the money. Click a premium to add it to the strategy builder.</p></div>
+            <div class="seg" id="chainCols"></div></div>
+          <div class="table-wrap scroll-y" style="max-height:560px" id="fnoChain"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c7">
+          <div class="card-head"><div><h3>Strategy builder</h3><p class="sub">Payoff at expiry, per the lot size</p></div><select id="stratPreset"></select></div>
+          <div id="legs"></div>
+          <div class="tiles" id="stratTiles" style="margin-top:12px"></div>
+          <div class="chart" id="payoff"></div>
+        </div>
+        <div class="card c5">
+          <div class="card-head"><div><h3>IV smile</h3><p class="sub">Implied volatility by strike, %</p></div></div><div class="chart short" id="fnoIV"></div>
+          <div class="card-head" style="margin-top:12px"><div><h3>PCR trend</h3><p class="sub">Put–call ratio, last 15 sessions</p></div></div><div class="chart short" id="fnoPCR"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUNDS -->
+    <section class="page" id="page-funds">
+      <div class="page-head"><div><h1>Mutual Fund Screener</h1><p id="mfIntro">Popular direct-growth schemes with real AMFI NAV history. Returns, risk, SIP results, a 1-year projection and a score for each fund. Search to analyse any other fund.</p></div></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div><h3>Search any mutual fund</h3><p class="sub">All ~38,000 AMFI schemes. Type at least 3 letters, e.g. "nippon growth", "sbi bluechip", "quant active".</p></div>
+          <label class="mut" style="font-size:12px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="mfDirectOnly" checked> Direct plan, growth option only</label></div>
+        <div class="searchbox"><input class="text-in" id="mfSearch" placeholder="Search fund name…" autocomplete="off" style="width:100%;max-width:560px"></div>
+        <div id="mfResults" class="table-wrap" style="margin-top:8px"></div>
+      </div>
+      <div class="filters"><span class="label">Category</span><div class="chips" id="mfCats"></div></div>
+      <div class="grid">
+        <div class="card c12"><div class="card-head"><div><h3>Fund screener</h3><p class="sub">Click a column to sort, click a fund to open it. Score = 3Y CAGR 30% · Sharpe 25% · drawdown 15% · Sortino 10% · consistency 10% · 1Y 10%.</p></div></div>
+          <div class="table-wrap scroll-y" id="mfTable"></div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px"><div class="stock-head" id="mfHead"></div></div>
+      <div class="tiles" id="mfTiles"></div>
+      <div class="grid">
+        <div class="card c8">
+          <div class="card-head"><div><h3>Growth of ₹100</h3><p class="sub">Selected fund, compared funds and NIFTY 50, for the period</p></div><select id="mfCompare"><option value="">+ Compare a fund</option></select></div>
+          <div class="chart" id="mfGrowth"></div>
+          <div class="chips" id="mfCmpChips"></div>
+        </div>
+        <div class="card c4"><div class="card-head"><div><h3>Rolling 1-year return</h3><p class="sub">Every 1-year holding window, %</p></div></div><div class="chart" id="mfRoll"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c6">
+          <div class="card-head"><div><h3>SIP calculator</h3><p class="sub">Real NAVs: a monthly SIP from the period start until today</p></div></div>
+          <div class="form-row"><label>Monthly SIP (₹)<input class="text-in" type="number" id="sipAmt" value="10000" min="500" step="500"></label></div>
+          <div class="tiles" id="sipTiles"></div>
+          <div class="chart short" id="sipChart"></div>
+        </div>
+        <div class="card c6">
+          <div class="card-head"><div><h3>Next 12 months (projection)</h3><p class="sub">Monte Carlo of a lump sum, 3,000 paths from 3 years of real daily returns</p></div></div>
+          <div class="form-row"><label>Lump sum (₹)<input class="text-in" type="number" id="lumpAmt" value="100000" min="1000" step="1000"></label></div>
+          <div class="tiles" id="projTiles"></div>
+          <div class="chart short" id="projChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOLDINGS -->
+    <section class="page" id="page-holdings">
+      <div class="page-head"><div><h1>Fund Holdings</h1><p>Which stocks each fund owns, how big its stake in each company is, and what funds bought or sold this month.</p></div>
+        <span class="modelled">◇ Modelled portfolios: AMCs publish holdings as monthly PDFs/Excel with no free API. Shapes follow each fund's category and AUM.</span></div>
+      <div class="filters">
+        <div class="seg" id="hMode"></div>
+        <select id="hFund"></select><select id="hStock"></select>
+      </div>
+      <div id="hByFund">
+        <div class="tiles" id="hfTiles"></div>
+        <div class="grid">
+          <div class="card c8"><div class="card-head"><div><h3 id="hfTitle">Portfolio</h3><p class="sub">Weight, value, stake in the company and change vs last month</p></div></div><div class="table-wrap scroll-y" id="hfTable"></div></div>
+          <div class="card c4">
+            <div class="card-head"><div><h3>Sector allocation</h3><p class="sub">% of equity holdings</p></div></div><div class="chart" id="hfSector"></div>
+            <div class="card-head" style="margin-top:8px"><div><h3>Market-cap mix</h3></div></div><div id="hfCap"></div>
+          </div>
+        </div>
+      </div>
+      <div id="hByStock" class="hidden">
+        <div class="tiles" id="hsTiles"></div>
+        <div class="grid">
+          <div class="card c7"><div class="card-head"><div><h3 id="hsTitle">Funds holding</h3><p class="sub">Stake of the company held by each fund, %</p></div></div><div class="chart tall" id="hsChart"></div></div>
+          <div class="card c5"><div class="card-head"><div><h3>Holder list</h3><p class="sub">Value and change this month</p></div></div><div class="table-wrap scroll-y" id="hsTable"></div></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c4"><div class="card-head"><div><h3>Most bought by funds</h3><p class="sub">Net added this month, ₹ Cr</p></div></div><div class="table-wrap" id="hTopBuy"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Most sold by funds</h3><p class="sub">Net reduced this month, ₹ Cr</p></div></div><div class="table-wrap" id="hTopSell"></div></div>
+        <div class="card c4"><div class="card-head"><div><h3>Highest total fund ownership</h3><p class="sub" id="hOwnSub"></p></div></div><div class="table-wrap" id="hTopOwn"></div></div>
+      </div>
+    </section>
+
+    <!-- ADVISOR -->
+    <section class="page" id="page-advisor">
+      <div class="page-head"><div><h1>Advisor &amp; Picks</h1><p>Answer three questions to get a model fund portfolio and a projected corpus. Stock screens below show the technical and ML signals, with their honest back-test.</p></div></div>
+      <div class="grid">
+        <div class="card c4">
+          <div class="card-head"><div><h3>Your profile</h3><p class="sub">Sets the mix of equity and debt</p></div></div>
+          <div class="form-row"><label>Age<select id="qAge"><option value="3">Under 30</option><option value="2" selected>30–45</option><option value="1">45–60</option><option value="0">Over 60</option></select></label>
+            <label>Investing for<select id="qHor"><option value="0">Under 3 years</option><option value="1">3–7 years</option><option value="2" selected>7–15 years</option><option value="3">Over 15 years</option></select></label></div>
+          <div class="form-row"><label>If your investment fell 20% in a month<select id="qFall"><option value="0">I would sell</option><option value="1">I would wait</option><option value="2" selected>I would hold calmly</option><option value="3">I would buy more</option></select></label></div>
+          <div class="form-row"><label>Monthly SIP (₹)<input class="text-in" type="number" id="advSip" value="15000" step="1000" min="500"></label>
+            <label>Years<input class="text-in" type="number" id="advYears" value="10" min="1" max="40"></label></div>
+          <div class="seg" id="advProfile"></div>
+          <p class="note" id="advNote"></p>
+        </div>
+        <div class="card c8">
+          <div class="card-head"><div><h3 id="advTitle">Model portfolio</h3><p class="sub">Highest-scoring fund in each bucket. Click a fund to open it.</p></div></div>
+          <div class="grid" style="margin:0"><div class="c4"><div class="chart short" id="advDonut"></div></div><div class="c8"><div class="table-wrap" id="advTable"></div></div></div>
+        </div>
+      </div>
+      <div class="tiles" id="advTiles"></div>
+      <div class="grid">
+        <div class="card c12"><div class="card-head"><div><h3>Projected corpus</h3><p class="sub">Monte Carlo of monthly SIPs using the portfolio's blended return and volatility. Bands: 10–90% range.</p></div></div><div class="chart" id="advProj"></div></div>
+      </div>
+      <div class="grid">
+        <div class="card c12">
+          <div class="card-head"><div><h3>Goal planner</h3><p class="sub">How much to invest every month to reach a target, using the model portfolio above</p></div></div>
+          <div class="form-row">
+            <label>Goal<select id="goalName"><option>Retirement</option><option>Child's education</option><option selected>House down payment</option><option>Car</option><option>Emergency fund</option><option>Other</option></select></label>
+            <label>Target amount (₹, today's value)<input class="text-in" type="number" id="goalAmt" value="5000000" step="100000" min="10000"></label>
+            <label>Years<input class="text-in" type="number" id="goalYears" value="10" min="1" max="40" style="width:90px"></label>
+            <label>Already saved (₹)<input class="text-in" type="number" id="goalHave" value="200000" step="10000" min="0"></label>
+            <label>Inflation %<input class="text-in" type="number" id="goalInfl" value="6" step="0.5" min="0" max="15" style="width:90px"></label>
+          </div>
+          <div class="tiles" id="goalTiles"></div>
+          <div class="chart short" id="goalChart"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="card c8"><div class="card-head"><div><h3>Stock screen</h3><p class="sub">Latest technical score and ML probability of a higher close in 20 sessions</p></div><div class="seg" id="screenSeg"></div></div><div class="table-wrap scroll-y" id="advStocks"></div></div>
+        <div class="card c4">
+          <div class="card-head"><div><h3>Do the signals work?</h3><p class="sub">Back-test since 2023: return over the next 20 sessions</p></div></div><div class="table-wrap" id="advBT"></div>
+          <div id="advML" style="margin-top:14px"></div>
+        </div>
+      </div>
+      <p class="disclaimer">Educational project, not investment advice. Past returns do not guarantee future returns. Mutual fund investments are subject to market risks; read all scheme documents carefully. Talk to a SEBI-registered investment adviser before investing.</p>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="page" id="page-portfolio">
+      <div class="page-head"><div><h1>My Portfolio</h1><p>Add your shares and mutual funds to see what they are worth, how risky the mix is, a 1-year prediction and what to fix. Your portfolio is saved only in this browser.</p></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="pfSample">Load sample</button><button type="button" class="btn" id="pfExport">Export</button><button type="button" class="btn" id="pfImportBtn">Import</button><input type="file" id="pfImport" accept="application/json" class="hidden"><button type="button" class="btn" id="pfClear">Clear all</button></div></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div><h3>Add a holding</h3><p class="sub">Pick a NIFTY 50 stock or one of the screener's mutual funds (search any other fund on the Fund Screener page first and it appears here too).</p></div></div>
+        <div class="form-row">
+          <label>Type<select id="pfType"><option value="S">Stock</option><option value="F">Mutual fund</option></select></label>
+          <label style="flex:1;min-width:240px">Name<input class="text-in" id="pfPick" list="pfList" placeholder="e.g. RELIANCE" autocomplete="off"><datalist id="pfList"></datalist></label>
+          <label><span id="pfQtyLabel">Quantity (shares)</span><input class="text-in" type="number" id="pfQty" min="0" step="any" style="width:130px"></label>
+          <label><span id="pfPriceLabel">Avg buy price (₹)</span><input class="text-in" type="number" id="pfPrice" min="0" step="any" style="width:140px"></label>
+          <button type="button" class="btn primary" id="pfAdd">+ Add</button>
+        </div>
+        <p class="note" id="pfMsg"></p>
+      </div>
+      <div class="grid">
+        <div class="card c6">
+          <div class="card-head"><div><h3>Import from your demat (file)</h3><p class="sub">Works with every broker. The file is read inside your browser and never uploaded.</p></div></div>
+          <div class="form-row">
+            <label>Broker<select id="dmBroker"><option value="zerodha">Zerodha</option><option value="groww">Groww</option><option value="upstox">Upstox</option><option value="angel">Angel One</option><option value="other">Other broker / CAS</option></select></label>
+            <label class="mut" style="font-size:12px;display:flex;gap:6px;align-items:center;flex-direction:row"><input type="checkbox" id="dmReplace" checked> Replace this broker's earlier import</label>
+          </div>
+          <p class="note" id="dmHow" style="margin:0 0 10px"></p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" class="btn primary" id="dmFileBtn">Choose holdings file (.xlsx / .csv)</button><input type="file" id="dmFile" accept=".csv,.xlsx,.xls" class="hidden"></div>
+          <p class="note" id="dmFileMsg"></p>
+        </div>
+        <div class="card c6">
+          <div class="card-head"><div><h3>Live sync (Zerodha · Upstox · Angel One)</h3><p class="sub">Uses the broker's official API through the BullScope helper running on your PC. You log in on the broker's own page.</p></div>
+            <span class="badge b-neu" id="dmHelper">checking helper…</span></div>
+          <div id="dmBrokers" style="display:grid;gap:8px"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn primary" id="dmSync">Sync holdings</button><button type="button" class="btn" id="dmRecheck">Re-check helper</button></div>
+          <p class="note" id="dmSyncMsg"></p>
+          <details class="note" style="margin-top:6px"><summary style="cursor:pointer">How to start the helper</summary>
+            <p>1. Create a developer app with your broker and put its key in <code>connector/.env</code> (copy <code>.env.example</code>).<br>
+               2. In a terminal: <code>cd connector</code> then <code>python bullscope_connector.py</code> (or add <code>--demo</code> to try it without a broker account).<br>
+               3. Click <b>Log in</b> next to your broker, finish the login on the broker's site, come back and click <b>Sync holdings</b>.<br>
+               Tokens stay in the helper's memory and expire daily. BullScope never sees your password.</p></details>
+        </div>
+      </div>
+      <div id="pfEmpty" class="card prose hidden"><h3>Your portfolio is empty</h3><p>Add holdings above, or click <b>Load sample</b> to see how the page works with a ready-made portfolio.</p></div>
+      <div id="pfBody">
+        <div class="tiles" id="pfTiles"></div>
+        <div class="grid">
+          <div class="card c12"><div class="card-head"><div><h3>Holdings</h3><p class="sub">Live value from the latest close / NAV, signal and outlook for each holding</p></div></div><div class="table-wrap" id="pfTable"></div></div>
+        </div>
+        <div class="grid">
+          <div class="card c8"><div class="card-head"><div><h3>Value of today's holdings over the period</h3><p class="sub">What your current holdings would have been worth on each day, vs NIFTY 50 with the same starting value</p></div></div><div class="chart" id="pfHist"></div></div>
+          <div class="card c4"><div class="card-head"><div><h3>Stocks vs mutual funds</h3><p class="sub">Share of portfolio value</p></div></div><div class="chart short" id="pfMix"></div><div class="legend" id="pfMixLegend"></div></div>
+        </div>
+        <div class="grid">
+          <div class="card c8"><div class="card-head"><div><h3>Prediction: next 12 months</h3><p class="sub">3,000 simulated paths that replay real days from the last 3 years, so holdings keep moving together as they really did. Shaded: 5–95% and 25–75% ranges.</p></div></div>
+            <div class="tiles" id="pfPredTiles"></div><div class="chart" id="pfPred"></div></div>
+          <div class="card c4"><div class="card-head"><div><h3>Health check &amp; suggestions</h3><p class="sub">Rules on concentration, risk and each holding's signal</p></div></div><div id="pfTips"></div></div>
+        </div>
+        <div class="grid">
+          <div class="card c6"><div class="card-head"><div><h3>Allocation by sector / fund category</h3><p class="sub">% of portfolio value</p></div></div><div class="chart" id="pfSector"></div></div>
+          <div class="card c6"><div class="card-head"><div><h3>Risk</h3><p class="sub">From the last year of daily returns of your current mix</p></div></div><div class="kv" id="pfRisk"></div>
+            <p class="note">Beta 1.0 moves like NIFTY 50; above 1 swings more. Value at risk (95%): a normal bad day should not lose more than this.</p></div>
+        </div>
+      </div>
+      <p class="disclaimer">Educational tool, not investment advice. Predictions replay past behaviour and can be wrong. Nothing you enter leaves your browser.</p>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <div class="page-head"><div><h1>Methodology</h1><p>Where every number comes from and how it is computed.</p></div></div>
+      <div class="card prose" id="aboutBody"></div>
+    </section>
+    <footer class="site-foot" id="siteFoot">
+      <div class="sf-brand"><img src="logo.svg" alt="" width="22" height="22" id="footLogo"><b>BullScope</b><span>Indian market, F&amp;O, mutual fund &amp; crypto analytics</span></div>
+      <div class="sf-cols">
+        <div><b>Data</b><span>NSE / BSE prices &amp; indices: Yahoo Finance</span><span>Mutual fund NAVs: AMFI via mfapi.in</span><span>Crypto: CoinGecko · Fear &amp; Greed: alternative.me</span><span>News &amp; videos: publisher RSS feeds, YouTube</span></div>
+        <div><b>Explore</b><a href="#overview">Market Overview</a><a href="#news">Market News</a><a href="#funds">Fund Screener</a><a href="#portfolio">My Portfolio</a><a href="#about">Methodology</a></div>
+        <div><b>About</b><span id="footAsOf"></span><span>Your portfolio, watchlists and saved news stay in this browser.</span><span>Built by Rahul Suryavanshi</span></div>
+      </div>
+      <p class="sf-legal">Educational project, not investment advice. Option open interest, FII/DII flows and fund holdings are modelled and labelled where shown. Not affiliated with NSE, BSE, AMFI or any AMC. Mutual fund and crypto investments are subject to market risks.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="gs hidden" id="gs" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="gs-box">
+    <div class="gs-bar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="gsInput" placeholder="Search a stock, mutual fund, index, coin, headline or page…" autocomplete="off" spellcheck="false"><kbd>Esc</kbd></div>
+    <div class="gs-list" id="gsList"></div>
+    <div class="gs-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>Esc</kbd> close</span><span style="margin-left:auto">Funds also search all ~38,000 AMFI schemes live</span></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

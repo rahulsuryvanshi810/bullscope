@@ -1,0 +1,451 @@
+{
+  "config": "{\"version\": \"5.43\", \"themeCollection\": {}, \"activeSectionIndex\": 0, \"defaultDrillFilterOtherVisuals\": true, \"settings\": {\"useStylableVisualContainerHeader\": true}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [],
+  "sections": [
+    {
+      "name": "ReportSection1",
+      "displayName": "1 Market overview",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720,
+      "ordinal": 0,
+      "config": "{}",
+      "filters": "[]",
+      "visualContainers": [
+        {
+          "x": 20,
+          "y": 16,
+          "z": 0,
+          "width": 360,
+          "height": 60,
+          "config": "{\"name\": \"adate\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 16, \"z\": 0, \"width\": 360, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Date.Date\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Period'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 400,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"asec\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 400, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Stocks.sector\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sector\"}, \"Name\": \"Stocks.sector\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Sector'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac0\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.NIFTY 50 Last\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"NIFTY 50 Last\"}, \"Name\": \"_Measures.NIFTY 50 Last\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'NIFTY 50'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 227,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 227, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.NIFTY 50 Return %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"NIFTY 50 Return %\"}, \"Name\": \"_Measures.NIFTY 50 Return %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'NIFTY 50 return'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 434,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac2\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 434, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.SENSEX Last\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"SENSEX Last\"}, \"Name\": \"_Measures.SENSEX Last\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'SENSEX'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 641,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 641, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Advancers\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Advancers\"}, \"Name\": \"_Measures.Advancers\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Stocks up'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 848,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac4\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 848, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Decliners\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Decliners\"}, \"Name\": \"_Measures.Decliners\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Stocks down'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 1055,
+          "y": 92,
+          "z": 0,
+          "width": 197,
+          "height": 100,
+          "config": "{\"name\": \"ac5\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1055, \"y\": 92, \"z\": 0, \"width\": 197, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.India VIX Last\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"India VIX Last\"}, \"Name\": \"_Measures.India VIX Last\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'India VIX'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 208,
+          "z": 0,
+          "width": 760,
+          "height": 290,
+          "config": "{\"name\": \"aline\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 208, \"z\": 0, \"width\": 760, \"height\": 290}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Date.Date\"}], \"Y\": [{\"queryRef\": \"_Measures.NIFTY 50 Close\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"NIFTY 50 Close\"}, \"Name\": \"_Measures.NIFTY 50 Close\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'NIFTY 50'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 796,
+          "y": 208,
+          "z": 0,
+          "width": 464,
+          "height": 290,
+          "config": "{\"name\": \"asect\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 796, \"y\": 208, \"z\": 0, \"width\": 464, \"height\": 290}}], \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Stocks.sector\"}], \"Y\": [{\"queryRef\": \"_Measures.Avg Stock Return %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sector\"}, \"Name\": \"Stocks.sector\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Avg Stock Return %\"}, \"Name\": \"_Measures.Avg Stock Return %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average return by sector'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 514,
+          "z": 0,
+          "width": 760,
+          "height": 190,
+          "config": "{\"name\": \"atree\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 514, \"z\": 0, \"width\": 760, \"height\": 190}}], \"singleVisual\": {\"visualType\": \"treemap\", \"projections\": {\"Group\": [{\"queryRef\": \"Stocks.sym\"}], \"Values\": [{\"queryRef\": \"_Measures.Market Cap (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sym\"}, \"Name\": \"Stocks.sym\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Market Cap (Cr)\"}, \"Name\": \"_Measures.Market Cap (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Market cap'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 796,
+          "y": 514,
+          "z": 0,
+          "width": 464,
+          "height": 190,
+          "config": "{\"name\": \"atab\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 796, \"y\": 514, \"z\": 0, \"width\": 464, \"height\": 190}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"Stocks.sym\"}, {\"queryRef\": \"_Measures.Last Close\"}, {\"queryRef\": \"_Measures.Period Return %\"}, {\"queryRef\": \"_Measures.Volatility %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sym\"}, \"Name\": \"Stocks.sym\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Last Close\"}, \"Name\": \"_Measures.Last Close\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Period Return %\"}, \"Name\": \"_Measures.Period Return %\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Volatility %\"}, \"Name\": \"_Measures.Volatility %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Stocks'\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ]
+    },
+    {
+      "name": "ReportSection2",
+      "displayName": "2 Buy sell flow",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720,
+      "ordinal": 1,
+      "config": "{}",
+      "filters": "[]",
+      "visualContainers": [
+        {
+          "x": 20,
+          "y": 16,
+          "z": 0,
+          "width": 360,
+          "height": 60,
+          "config": "{\"name\": \"bdate\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 16, \"z\": 0, \"width\": 360, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Date.Date\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Period'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 400,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"btopn\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 400, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Top N.Top N\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Top N\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Top N\"}, \"Name\": \"Top N.Top N\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Top N'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 720,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"bstock\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 720, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Stocks.sym\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sym\"}, \"Name\": \"Stocks.sym\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Stock'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 92,
+          "z": 0,
+          "width": 302,
+          "height": 100,
+          "config": "{\"name\": \"bc0\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 92, \"z\": 0, \"width\": 302, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Turnover (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Turnover (Cr)\"}, \"Name\": \"_Measures.Turnover (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Turnover (\\u20b9 Cr)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 332,
+          "y": 92,
+          "z": 0,
+          "width": 302,
+          "height": 100,
+          "config": "{\"name\": \"bc1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 332, \"y\": 92, \"z\": 0, \"width\": 302, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Net Flow (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Net Flow (Cr)\"}, \"Name\": \"_Measures.Net Flow (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Net buying (\\u20b9 Cr)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 644,
+          "y": 92,
+          "z": 0,
+          "width": 302,
+          "height": 100,
+          "config": "{\"name\": \"bc2\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 644, \"y\": 92, \"z\": 0, \"width\": 302, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.FII Net (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"FII Net (Cr)\"}, \"Name\": \"_Measures.FII Net (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'FII net (\\u20b9 Cr, modelled)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 956,
+          "y": 92,
+          "z": 0,
+          "width": 302,
+          "height": 100,
+          "config": "{\"name\": \"bc3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 956, \"y\": 92, \"z\": 0, \"width\": 302, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.DII Net (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"DII Net (Cr)\"}, \"Name\": \"_Measures.DII Net (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'DII net (\\u20b9 Cr, modelled)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 208,
+          "z": 0,
+          "width": 620,
+          "height": 300,
+          "config": "{\"name\": \"bbar\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 208, \"z\": 0, \"width\": 620, \"height\": 300}}], \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Stocks.sym\"}], \"Y\": [{\"queryRef\": \"_Measures.Net Flow (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Stocks\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sym\"}, \"Name\": \"Stocks.sym\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Net Flow (Cr)\"}, \"Name\": \"_Measures.Net Flow (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Net buying by stock (\\u20b9 Cr)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 656,
+          "y": 208,
+          "z": 0,
+          "width": 604,
+          "height": 300,
+          "config": "{\"name\": \"bmon\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 656, \"y\": 208, \"z\": 0, \"width\": 604, \"height\": 300}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Date.Month Start\"}], \"Y\": [{\"queryRef\": \"_Measures.Buy Value (Cr)\"}, {\"queryRef\": \"_Measures.Sell Value Negative (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Month Start\"}, \"Name\": \"Date.Month Start\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Buy Value (Cr)\"}, \"Name\": \"_Measures.Buy Value (Cr)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Sell Value Negative (Cr)\"}, \"Name\": \"_Measures.Sell Value Negative (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Bought vs sold by month (\\u20b9 Cr)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 524,
+          "z": 0,
+          "width": 1240,
+          "height": 180,
+          "config": "{\"name\": \"bfii\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 524, \"z\": 0, \"width\": 1240, \"height\": 180}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Date.Date\"}], \"Y\": [{\"queryRef\": \"_Measures.Cumulative FII Net (Cr)\"}, {\"queryRef\": \"_Measures.Cumulative DII Net (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Cumulative FII Net (Cr)\"}, \"Name\": \"_Measures.Cumulative FII Net (Cr)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Cumulative DII Net (Cr)\"}, \"Name\": \"_Measures.Cumulative DII Net (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Cumulative FII and DII net flow (modelled)'\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ]
+    },
+    {
+      "name": "ReportSection3",
+      "displayName": "3 Mutual funds",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720,
+      "ordinal": 2,
+      "config": "{}",
+      "filters": "[]",
+      "visualContainers": [
+        {
+          "x": 20,
+          "y": 16,
+          "z": 0,
+          "width": 360,
+          "height": 60,
+          "config": "{\"name\": \"cdate\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 16, \"z\": 0, \"width\": 360, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Date.Date\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Period'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 400,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"ccat\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 400, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Funds.category\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Funds\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"category\"}, \"Name\": \"Funds.category\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Category'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 720,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"cfund\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 720, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Funds.fund\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Funds\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"fund\"}, \"Name\": \"Funds.fund\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Fund'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 92,
+          "z": 0,
+          "width": 240,
+          "height": 100,
+          "config": "{\"name\": \"cc0\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 92, \"z\": 0, \"width\": 240, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Fund Count\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Fund Count\"}, \"Name\": \"_Measures.Fund Count\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Funds'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 270,
+          "y": 92,
+          "z": 0,
+          "width": 240,
+          "height": 100,
+          "config": "{\"name\": \"cc1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 270, \"y\": 92, \"z\": 0, \"width\": 240, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Avg 3Y CAGR %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Avg 3Y CAGR %\"}, \"Name\": \"_Measures.Avg 3Y CAGR %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average 3Y CAGR'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 520,
+          "y": 92,
+          "z": 0,
+          "width": 240,
+          "height": 100,
+          "config": "{\"name\": \"cc2\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 520, \"y\": 92, \"z\": 0, \"width\": 240, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Avg Sharpe\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Avg Sharpe\"}, \"Name\": \"_Measures.Avg Sharpe\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average Sharpe'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 770,
+          "y": 92,
+          "z": 0,
+          "width": 240,
+          "height": 100,
+          "config": "{\"name\": \"cc3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 770, \"y\": 92, \"z\": 0, \"width\": 240, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Avg Max Drawdown %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Avg Max Drawdown %\"}, \"Name\": \"_Measures.Avg Max Drawdown %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average max drawdown'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 1020,
+          "y": 92,
+          "z": 0,
+          "width": 240,
+          "height": 100,
+          "config": "{\"name\": \"cc4\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1020, \"y\": 92, \"z\": 0, \"width\": 240, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Top Fund by Score\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Top Fund by Score\"}, \"Name\": \"_Measures.Top Fund by Score\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Top-scored fund'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 208,
+          "z": 0,
+          "width": 760,
+          "height": 290,
+          "config": "{\"name\": \"cnav\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 208, \"z\": 0, \"width\": 760, \"height\": 290}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Date.Date\"}], \"Series\": [{\"queryRef\": \"Funds.fund\"}], \"Y\": [{\"queryRef\": \"_Measures.NAV\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Date\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"Funds\", \"Type\": 0}, {\"Name\": \"t2\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Date\"}, \"Name\": \"Date.Date\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"fund\"}, \"Name\": \"Funds.fund\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t2\"}}, \"Property\": \"NAV\"}, \"Name\": \"_Measures.NAV\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'NAV history'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 796,
+          "y": 208,
+          "z": 0,
+          "width": 464,
+          "height": 290,
+          "config": "{\"name\": \"cscat\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 796, \"y\": 208, \"z\": 0, \"width\": 464, \"height\": 290}}], \"singleVisual\": {\"visualType\": \"scatterChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Funds.fund\"}], \"X\": [{\"queryRef\": \"Funds.volatility\"}], \"Y\": [{\"queryRef\": \"Funds.cagr3y\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Funds\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"fund\"}, \"Name\": \"Funds.fund\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"volatility\"}, \"Name\": \"Funds.volatility\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"cagr3y\"}, \"Name\": \"Funds.cagr3y\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Risk vs 3Y return'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 514,
+          "z": 0,
+          "width": 1240,
+          "height": 190,
+          "config": "{\"name\": \"ctab\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 514, \"z\": 0, \"width\": 1240, \"height\": 190}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"Funds.fund\"}, {\"queryRef\": \"Funds.category\"}, {\"queryRef\": \"Funds.r1y\"}, {\"queryRef\": \"Funds.cagr3y\"}, {\"queryRef\": \"Funds.cagr5y\"}, {\"queryRef\": \"Funds.sharpe\"}, {\"queryRef\": \"Funds.max_drawdown\"}, {\"queryRef\": \"Funds.score\"}, {\"queryRef\": \"Funds.recommendation\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Funds\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"fund\"}, \"Name\": \"Funds.fund\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"category\"}, \"Name\": \"Funds.category\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"r1y\"}, \"Name\": \"Funds.r1y\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"cagr3y\"}, \"Name\": \"Funds.cagr3y\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"cagr5y\"}, \"Name\": \"Funds.cagr5y\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sharpe\"}, \"Name\": \"Funds.sharpe\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"max_drawdown\"}, \"Name\": \"Funds.max_drawdown\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"score\"}, \"Name\": \"Funds.score\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"recommendation\"}, \"Name\": \"Funds.recommendation\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Fund screener'\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ]
+    },
+    {
+      "name": "ReportSection4",
+      "displayName": "4 Holdings & options",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720,
+      "ordinal": 3,
+      "config": "{}",
+      "filters": "[]",
+      "visualContainers": [
+        {
+          "x": 20,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"dfund\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Funds.fund\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Funds\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"fund\"}, \"Name\": \"Funds.fund\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Fund'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 660,
+          "y": 16,
+          "z": 0,
+          "width": 300,
+          "height": 60,
+          "config": "{\"name\": \"dund\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 660, \"y\": 16, \"z\": 0, \"width\": 300, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Option Chain.underlying\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Option Chain\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"underlying\"}, \"Name\": \"Option Chain.underlying\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Underlying'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 980,
+          "y": 16,
+          "z": 0,
+          "width": 280,
+          "height": 60,
+          "config": "{\"name\": \"dexp\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 980, \"y\": 16, \"z\": 0, \"width\": 280, \"height\": 60}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Option Chain.expiry\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Option Chain\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"expiry\"}, \"Name\": \"Option Chain.expiry\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Expiry'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 92,
+          "z": 0,
+          "width": 620,
+          "height": 400,
+          "config": "{\"name\": \"dhold\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 92, \"z\": 0, \"width\": 620, \"height\": 400}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"Fund Holdings.company\"}, {\"queryRef\": \"_Measures.Holding Value (Cr)\"}, {\"queryRef\": \"_Measures.Total Fund Stake %\"}, {\"queryRef\": \"_Measures.Funds Holding\"}, {\"queryRef\": \"_Measures.Holding Change (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Fund Holdings\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"company\"}, \"Name\": \"Fund Holdings.company\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Holding Value (Cr)\"}, \"Name\": \"_Measures.Holding Value (Cr)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Total Fund Stake %\"}, \"Name\": \"_Measures.Total Fund Stake %\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Funds Holding\"}, \"Name\": \"_Measures.Funds Holding\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Holding Change (Cr)\"}, \"Name\": \"_Measures.Holding Change (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Fund holdings (modelled)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 20,
+          "y": 508,
+          "z": 0,
+          "width": 620,
+          "height": 196,
+          "config": "{\"name\": \"dsec\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 508, \"z\": 0, \"width\": 620, \"height\": 196}}], \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Fund Holdings.sector\"}], \"Y\": [{\"queryRef\": \"_Measures.Holding Value (Cr)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Fund Holdings\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"sector\"}, \"Name\": \"Fund Holdings.sector\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Holding Value (Cr)\"}, \"Name\": \"_Measures.Holding Value (Cr)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Holdings by sector (\\u20b9 Cr)'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 656,
+          "y": 92,
+          "z": 0,
+          "width": 146,
+          "height": 100,
+          "config": "{\"name\": \"dk0\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 656, \"y\": 92, \"z\": 0, \"width\": 146, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Spot\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Spot\"}, \"Name\": \"_Measures.Spot\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Spot'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 810,
+          "y": 92,
+          "z": 0,
+          "width": 146,
+          "height": 100,
+          "config": "{\"name\": \"dk1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 810, \"y\": 92, \"z\": 0, \"width\": 146, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.PCR\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"PCR\"}, \"Name\": \"_Measures.PCR\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Put-call ratio'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 964,
+          "y": 92,
+          "z": 0,
+          "width": 146,
+          "height": 100,
+          "config": "{\"name\": \"dk2\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 964, \"y\": 92, \"z\": 0, \"width\": 146, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Max Pain\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"Max Pain\"}, \"Name\": \"_Measures.Max Pain\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Max pain'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 1118,
+          "y": 92,
+          "z": 0,
+          "width": 146,
+          "height": 100,
+          "config": "{\"name\": \"dk3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1118, \"y\": 92, \"z\": 0, \"width\": 146, \"height\": 100}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.ATM IV %\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"ATM IV %\"}, \"Name\": \"_Measures.ATM IV %\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'ATM IV'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 656,
+          "y": 208,
+          "z": 0,
+          "width": 604,
+          "height": 296,
+          "config": "{\"name\": \"doi\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 656, \"y\": 208, \"z\": 0, \"width\": 604, \"height\": 296}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Option Chain.strike\"}], \"Y\": [{\"queryRef\": \"_Measures.Call OI\"}, {\"queryRef\": \"_Measures.Put OI\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Option Chain\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"strike\"}, \"Name\": \"Option Chain.strike\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Call OI\"}, \"Name\": \"_Measures.Call OI\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Put OI\"}, \"Name\": \"_Measures.Put OI\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Open interest by strike'\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 656,
+          "y": 520,
+          "z": 0,
+          "width": 604,
+          "height": 184,
+          "config": "{\"name\": \"dchg\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 656, \"y\": 520, \"z\": 0, \"width\": 604, \"height\": 184}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Option Chain.strike\"}], \"Y\": [{\"queryRef\": \"_Measures.Call Change in OI\"}, {\"queryRef\": \"_Measures.Put Change in OI\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t0\", \"Entity\": \"Option Chain\", \"Type\": 0}, {\"Name\": \"t1\", \"Entity\": \"_Measures\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t0\"}}, \"Property\": \"strike\"}, \"Name\": \"Option Chain.strike\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Call Change in OI\"}, \"Name\": \"_Measures.Call Change in OI\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t1\"}}, \"Property\": \"Put Change in OI\"}, \"Name\": \"_Measures.Put Change in OI\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Change in OI'\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2024.2.0 (20242.24.0807.0327)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <preferences />
+  <datasources>
+    <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
+      <aliases enabled='yes' />
+      <column caption="p.Top N" datatype='integer' name="[p.Top N]" param-domain-type='range' role='measure' type='quantitative' value='10'>
+        <calculation class='tableau' formula='10' />
+        <range granularity='1' max='25' min='5' />
+      </column>
+      <column caption="p.MA Window" datatype='integer' name="[p.MA Window]" param-domain-type='range' role='measure' type='quantitative' value='50'>
+        <calculation class='tableau' formula='50' />
+        <range granularity='5' max='200' min='5' />
+      </column>
+      <column caption="p.Metric" datatype='string' name="[p.Metric]" param-domain-type='list' role='measure' type='nominal' value='"Turnover (Cr)"'>
+        <calculation class='tableau' formula='"Turnover (Cr)"' />
+        <members>
+          <member value='"Turnover (Cr)"' />
+          <member value='"Net flow (Cr)"' />
+          <member value='"Volume"' />
+        </members>
+      </column>
+    </datasource>
+    <datasource caption='NIFTY 50 Daily' inline='true' name='federated.dsp0001' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='stocks_flat' name='textscan.dsp0001'>
+            <connection class='textscan' directory="C:/Users/Rahul/projects/GitHub-Projects/bullscope/tableau" filename='stocks_flat.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.dsp0001' name='stocks_flat.csv' table='[stocks_flat#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='date' name='date' ordinal='0' />
+            <column datatype='string' name='symbol' ordinal='1' />
+            <column datatype='real' name='open' ordinal='2' />
+            <column datatype='real' name='high' ordinal='3' />
+            <column datatype='real' name='low' ordinal='4' />
+            <column datatype='real' name='close' ordinal='5' />
+            <column datatype='real' name='volume' ordinal='6' />
+            <column datatype='real' name='daily_return' ordinal='7' />
+            <column datatype='real' name='turnover_cr' ordinal='8' />
+            <column datatype='real' name='buy_value_cr' ordinal='9' />
+            <column datatype='real' name='sell_value_cr' ordinal='10' />
+            <column datatype='string' name='name' ordinal='11' />
+            <column datatype='string' name='sector' ordinal='12' />
+            <column datatype='real' name='mcap_cr' ordinal='13' />
+            <column datatype='real' name='pe' ordinal='14' />
+            <column datatype='string' name='signal' ordinal='15' />
+            <column datatype='integer' name='score' ordinal='16' />
+          </columns>
+        </relation>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption="Analysis → Create Calculated Field**.&#10;Names in **bold** are the field names to use. The `.twb` built by `scripts/build_bi_files.py` already contains&#10;all of them.&#10;&#10;## Row-level fields&#10;&#10;" datatype='real' name="[Analysis → Create Calculated Field**.&#10;Names in **bold** are the field names to use. The `.twb` built by `scripts/build_bi_files.py` already contains&#10;all of them.&#10;&#10;## Row-level fields&#10;&#10;]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="[buy_value_cr] - [sell_value_cr]" />
+      </column>
+      <column caption="Up Day" datatype='boolean' name="[Up Day]" role='dimension' type='nominal'>
+        <calculation class='tableau' formula="[daily_return] &gt; 0" />
+      </column>
+      <column caption="Market Cap (Cr)" datatype='real' name="[Market Cap (Cr)]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="{ FIXED [symbol] : MAX([mcap_cr]) }" />
+      </column>
+      <column caption="Net Flow %" datatype='real' name="[Net Flow %]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="SUM([Net Flow (Cr)]) / SUM([turnover_cr])" />
+      </column>
+      <column caption="Volatility %" datatype='real' name="[Volatility %]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="STDEV([daily_return]) * SQRT(252)" />
+      </column>
+      <column caption="Selected Metric" datatype='real' name="[Selected Metric]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula='CASE [Parameters].[p.Metric]&#10;WHEN "Turnover (Cr)" THEN SUM([turnover_cr])&#10;WHEN "Net flow (Cr)" THEN SUM([Net Flow (Cr)])&#10;ELSE SUM([volume])&#10;END' />
+      </column>
+      <column caption="Period Return %" datatype='real' name="[Period Return %]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="LOOKUP(SUM([close]), LAST()) / LOOKUP(SUM([close]), FIRST()) - 1" />
+      </column>
+      <column caption="Indexed Price" datatype='real' name="[Indexed Price]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="SUM([close]) / LOOKUP(SUM([close]), FIRST()) * 100" />
+      </column>
+      <column caption="Moving Average" datatype='real' name="[Moving Average]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="WINDOW_AVG(SUM([close]), -[Parameters].[p.MA Window] + 1, 0)" />
+      </column>
+      <column caption="Net Flow Rank" datatype='integer' name="[Net Flow Rank]" role='measure' type='quantitative'>
+        <calculation class='tableau' formula="RANK(SUM([Net Flow (Cr)]))" />
+      </column>
+      <column caption="Show Top N" datatype='boolean' name="[Show Top N]" role='dimension' type='nominal'>
+        <calculation class='tableau' formula="RANK(SUM([Net Flow (Cr)])) &lt;= [Parameters].[p.Top N]" />
+      </column>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Start here - drag fields from the Data pane'>
+      <table>
+        <view>
+          <datasources />
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{9C7C7377-79A2-4903-BBE3-3B243EAE0032}' />
+    </worksheet>
+  </worksheets>
+</workbook>

@@ -1,0 +1,102 @@
+table 'Fund Holdings'
+	lineageTag: 01d74256-3860-4ab6-96a4-02f23ae8cc93
+
+	column 'scheme_code'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 0f1259e0-a18f-46b6-b535-106e122c9a56
+		summarizeBy: none
+		sourceColumn: scheme_code
+
+	column 'symbol'
+		dataType: string
+		lineageTag: 080aadfb-e7c9-4b26-9141-25c63a9bedd4
+		summarizeBy: none
+		sourceColumn: symbol
+
+	column 'company'
+		dataType: string
+		lineageTag: 839fbc50-1223-4513-9496-f63cdc1110c1
+		summarizeBy: none
+		sourceColumn: company
+
+	column 'sector'
+		dataType: string
+		lineageTag: 7c441fe7-ab42-40a7-874a-493b3ceddf2d
+		summarizeBy: none
+		sourceColumn: sector
+
+	column 'cap_bucket'
+		dataType: string
+		lineageTag: b92da22b-21df-406f-8a0b-3c3336d8393a
+		summarizeBy: none
+		sourceColumn: cap_bucket
+
+	column 'weight_pct'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 93829b43-922f-415a-a1e3-db63ef7ddc76
+		summarizeBy: sum
+		sourceColumn: weight_pct
+
+	column 'value_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 7914c120-c8dc-419f-be35-11287900f7f9
+		summarizeBy: sum
+		sourceColumn: value_cr
+
+	column 'prev_value_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 1825bc54-30be-445f-a835-14f2ceb81f9d
+		summarizeBy: sum
+		sourceColumn: prev_value_cr
+
+	column 'change_cr'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5ab33edf-6e59-4ed3-a8b3-17fa18d0752b
+		summarizeBy: sum
+		sourceColumn: change_cr
+
+	column 'change'
+		dataType: string
+		lineageTag: dd2467ac-778e-4db3-a93d-ffbc6c6fa611
+		summarizeBy: none
+		sourceColumn: change
+
+	column 'stake_pct'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a748dbcf-ac61-4e63-8dde-29a6baa4b71a
+		summarizeBy: sum
+		sourceColumn: stake_pct
+
+	partition 'Fund Holdings' = m
+		mode: import
+		source =
+				let
+				    Source  = Csv.Document(File.Contents(DataFolder & "fact_fund_holdings.csv"),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Keep    = Table.SelectColumns(Headers, {"scheme_code", "symbol", "company", "sector", "cap_bucket", "weight_pct", "value_cr", "prev_value_cr", "change_cr", "change", "stake_pct"}),
+				    Blanks  = Table.ReplaceValue(Keep, "", null, Replacer.ReplaceValue, {"scheme_code", "weight_pct", "value_cr", "prev_value_cr", "change_cr", "stake_pct"}),
+				    Typed   = Table.TransformColumnTypes(Blanks, {
+				        {"scheme_code", Int64.Type},
+				        {"symbol", type text},
+				        {"company", type text},
+				        {"sector", type text},
+				        {"cap_bucket", type text},
+				        {"weight_pct", type number},
+				        {"value_cr", type number},
+				        {"prev_value_cr", type number},
+				        {"change_cr", type number},
+				        {"change", type text},
+				        {"stake_pct", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

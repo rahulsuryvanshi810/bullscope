@@ -1,0 +1,89 @@
+table Date
+	dataCategory: Time
+	lineageTag: dca02eec-acda-4acc-9165-e21098543881
+
+	column 'Date'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		isKey
+		lineageTag: f10c718b-1eb0-438a-a75d-d5af3c365296
+		summarizeBy: none
+		sourceColumn: [Date]
+
+	column 'Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 94340a03-3f07-4814-91d6-3f78e3e9de99
+		summarizeBy: none
+		sourceColumn: [Year]
+
+	column 'Quarter'
+		dataType: string
+		lineageTag: 14fcdd54-9e8f-4965-8a2c-827e98326856
+		summarizeBy: none
+		sourceColumn: [Quarter]
+
+	column 'Month No'
+		dataType: int64
+		formatString: 0
+		lineageTag: 90b2b633-956b-4c0c-a849-9b926b5252e3
+		summarizeBy: none
+		sourceColumn: [Month No]
+
+	column 'Month'
+		dataType: string
+		lineageTag: 42c18a62-ef48-48d5-90fd-9d3f85d51695
+		summarizeBy: none
+		sourceColumn: [Month]
+		sortByColumn: 'Month Start'
+
+	column 'Month Start'
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: 506e5a9a-b758-488d-ab73-295b344a54b8
+		summarizeBy: none
+		sourceColumn: [Month Start]
+
+	column 'Week Start'
+		dataType: dateTime
+		formatString: d mmm yyyy
+		lineageTag: 21813d25-6552-48a6-83ff-50113d1a85dd
+		summarizeBy: none
+		sourceColumn: [Week Start]
+
+	column 'Weekday'
+		dataType: string
+		lineageTag: 750cab75-4ccc-4bc2-a53f-8a28abf3e3fc
+		summarizeBy: none
+		sourceColumn: [Weekday]
+		sortByColumn: 'Weekday No'
+
+	column 'Weekday No'
+		dataType: int64
+		formatString: 0
+		lineageTag: ef8c485b-c07a-40f2-add4-253b50f0fd0a
+		summarizeBy: none
+		sourceColumn: [Weekday No]
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: 9f044aed-7552-4327-8262-7f7312922f83
+		summarizeBy: none
+		sourceColumn: [Fiscal Year]
+
+	partition Date = calculated
+		mode: import
+		source =
+				ADDCOLUMNS (
+					CALENDAR ( DATE ( 2019, 1, 1 ), DATE ( 2027, 12, 31 ) ),
+					"Year", YEAR ( [Date] ),
+					"Quarter", "Q" & QUARTER ( [Date] ),
+					"Month No", MONTH ( [Date] ),
+					"Month", FORMAT ( [Date], "MMM yyyy" ),
+					"Month Start", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ),
+					"Week Start", [Date] - WEEKDAY ( [Date], 2 ) + 1,
+					"Weekday", FORMAT ( [Date], "ddd" ),
+					"Weekday No", WEEKDAY ( [Date], 2 ),
+					"Fiscal Year", "FY" & FORMAT ( IF ( MONTH ( [Date] ) >= 4, YEAR ( [Date] ) + 1, YEAR ( [Date] ) ) - 2000, "00" )
+				)
+

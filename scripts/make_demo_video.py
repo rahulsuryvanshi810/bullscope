@@ -41,18 +41,22 @@ STATE = {
 
 
 # ------------------------------------------------------------------------------------------- drawing
+TIP = (2, 2)  # arrow tip inside the cursor image: this pixel sits exactly on the point being clicked
+
+
 def make_cursor():
-    s = 3  # draw large then shrink for smooth edges
-    pts = [(0, 0), (0, 25), (6.5, 19), (10.5, 28.5), (14.5, 27), (10.5, 17.5), (19, 17.5)]
-    pts = [(x * s + 8, y * s + 8) for x, y in pts]
-    im = Image.new("RGBA", (40 * s, 44 * s), (0, 0, 0, 0))
-    sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
-    ImageDraw.Draw(sh).polygon([(x + 4, y + 6) for x, y in pts], fill=(0, 0, 0, 120))
-    im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(5)))
+    """Standard Windows-style arrow (white fill, thin dark outline, soft shadow), drawn 4x and scaled down."""
+    s = 4
+    shape = [(0, 0), (0, 17), (4.2, 13.2), (7, 19.5), (9.6, 18.4), (6.9, 12.2), (12, 12.2)]  # ~12 x 20 px, like the real pointer at 125%
+    pts = [((x + TIP[0]) * s, (y + TIP[1]) * s) for x, y in shape]
+    size = (20 * s, 26 * s)
+    shadow = Image.new("RGBA", size, (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).polygon([(x + 1.5 * s, y + 2 * s) for x, y in pts], fill=(0, 0, 0, 90))
+    im = shadow.filter(ImageFilter.GaussianBlur(1.6 * s))
     d = ImageDraw.Draw(im)
-    d.polygon(pts, fill=(255, 255, 255, 255), outline=(10, 15, 28, 255))
-    d.line(pts + [pts[0]], fill=(10, 15, 28, 255), width=5, joint="curve")
-    return im.resize((40, 44), Image.LANCZOS)
+    d.polygon(pts, fill=(255, 255, 255, 255))
+    d.line(pts + [pts[0]], fill=(0, 0, 0, 255), width=int(1.1 * s), joint="curve")
+    return im.resize((20, 26), Image.LANCZOS)
 
 
 CURSOR = make_cursor()
@@ -60,22 +64,14 @@ CURSOR = make_cursor()
 
 def draw_cursor(img, x, y, ripple=0.0, wheel=False):
     img = img.convert("RGBA")
-    if ripple > 0:
+    if ripple > 0:  # click pulse centred on the arrow tip
         layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
         d = ImageDraw.Draw(layer)
-        r = 10 + 34 * ripple
-        a = int(200 * (1 - ripple))
-        d.ellipse([x - r, y - r, x + r, y + r], outline=BLUE + (a,), width=4, fill=BLUE + (int(a * 0.25),))
+        r = 5 + 15 * ripple
+        a = int(190 * (1 - ripple))
+        d.ellipse([x - r, y - r, x + r, y + r], outline=BLUE + (a,), width=3, fill=BLUE + (int(a * 0.3),))
         img = Image.alpha_composite(img, layer)
-    if wheel:
-        layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
-        d = ImageDraw.Draw(layer)
-        cx, cy = x + 34, y + 30
-        d.rounded_rectangle([cx - 13, cy - 20, cx + 13, cy + 20], radius=13, fill=(10, 15, 28, 210), outline=BLUE + (230,), width=2)
-        d.rounded_rectangle([cx - 2, cy - 11, cx + 2, cy - 1], radius=2, fill=BLUE + (255,))
-        d.polygon([(cx - 6, cy + 9), (cx + 6, cy + 9), (cx, cy + 15)], fill=BLUE + (255,))
-        img = Image.alpha_composite(img, layer)
-    img.alpha_composite(CURSOR, (int(x) - 8, int(y) - 8))
+    img.alpha_composite(CURSOR, (int(round(x)) - TIP[0], int(round(y)) - TIP[1]))
     return img
 
 
@@ -187,6 +183,8 @@ class Director:
         tx, ty = r[0] + r[2] * x_frac, r[1] + r[3] * y_frac
         tx, ty = min(max(tx, 4), W - 6), min(max(ty, 4), H - 6)
         self.glide(tx, ty)
+        hit = self.d.execute_script(f"const t=document.querySelector({json.dumps(sel)}), e=document.elementFromPoint({tx / ZOOM},{ty / ZOOM}); return !!(t && e && (t===e || t.contains(e) || e.contains(t)));")
+        print(("OK  " if hit else "MISS") + f" click {sel} at ({tx:.0f},{ty:.0f})")
         base = self.shot()
         for k in range(1, 9):
             self.frame(base, ripple=k / 9)

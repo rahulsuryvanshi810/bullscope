@@ -1390,3 +1390,8 @@ date,year,quarter,month,month_name,weekday,is_trading_day
 2026-10-21,2026,Q4,10,Oct,Wednesday,1
 2026-10-22,2026,Q4,10,Oct,Thursday,1
 2026-10-23,2026,Q4,10,Oct,Friday,1
+2026-10-24,2026,Q4,10,Oct,Saturday,0
+2026-10-25,2026,Q4,10,Oct,Sunday,0
+2026-10-26,2026,Q4,10,Oct,Monday,1
+2026-10-27,2026,Q4,10,Oct,Tuesday,1
+2026-10-28,2026,Q4,10,Oct,Wednesday,1

@@ -1418,3 +1418,6 @@ date,year,quarter,month,month_name,weekday,is_trading_day
 2026-11-18,2026,Q4,11,Nov,Wednesday,1
 2026-11-19,2026,Q4,11,Nov,Thursday,1
 2026-11-20,2026,Q4,11,Nov,Friday,1
+2026-11-21,2026,Q4,11,Nov,Saturday,0
+2026-11-22,2026,Q4,11,Nov,Sunday,0
+2026-11-23,2026,Q4,11,Nov,Monday,1
